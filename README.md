@@ -28,10 +28,12 @@
 | GET /v1/user/info | :white_check_mark: |
 | PUT /v1/user/info | :white_check_mark: |
 
-## Features
+## Tech Stack
 
 - Web Framework
   - [gin](https://github.com/gin-gonic/gin)
+    - [Doc](https://gin-gonic.com/)
+- Library
   - [validator](https://github.com/go-playground/validator)
     - [Doc](https://pkg.go.dev/github.com/go-playground/validator/v10)
   - [go-gin-boilerplate](https://github.com/vsouza/go-gin-boilerplate)
@@ -104,3 +106,10 @@ curl --location --request POST 'http://localhost:8080/login' \
     "message": "Error to retrieve userCredential"
 }
 ```
+
+## Testing
+
+### Reading
+
+- <https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go>
+  - Each test file within your project must end with `_test.go` and each test method must start with a `Test` prefix. This is a standard naming convention for a valid test.
