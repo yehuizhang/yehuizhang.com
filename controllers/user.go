@@ -64,7 +64,7 @@ func (u UserController) UpdateInfo(c *gin.Context) {
 	err := c.Bind(&userInfoInput)
 
 	if err != nil {
-		log.Fatal("Unable to read UserInfo from body: ", err)
+		log.Print("Unable to read UserInfo from body: ", err)
 		c.Abort()
 		return
 	}
