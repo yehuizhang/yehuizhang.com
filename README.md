@@ -1,7 +1,9 @@
 # Go Webapp Using GIN
 
+[![GitHub version](https://badge.fury.io/gh/yehuizhang%2Fgo-zyh-webserver.svg)](https://badge.fury.io/gh/yehuizhang%2Fgo-zyh-webserver)
 [![CodeFactor](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver/badge)](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver)
 [![codecov](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graph/badge.svg?token=fQ74xxW1ez)](https://codecov.io/gh/yehuizhang/go-zyh-webserver)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyehuizhang%2Fgo-zyh-webserver.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyehuizhang%2Fgo-zyh-webserver?ref=badge_shield)
 
 ## Tasks
 
