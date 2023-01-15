@@ -6,6 +6,11 @@ VERSION=0.0.1
 test:
 	@go test -v ./tests/*
 
+.PHONY: test-cov
+## test with coverage
+test-cov:
+	@go test ./tests -coverpkg=./... -race -covermode=atomic -coverprofile=coverage.out
+
 ########## Following are unverified scripts
 .PHONY: build
 ## build: Compile the packages.
