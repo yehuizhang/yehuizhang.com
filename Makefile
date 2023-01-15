@@ -1,6 +1,12 @@
 NAME=go-webapp-gin
 VERSION=0.0.1
 
+.PHONY: test
+## test: Run tests with verbose mode
+test:
+	@go test -v ./tests/*
+
+########## Following are unverified scripts
 .PHONY: build
 ## build: Compile the packages.
 build:
@@ -26,10 +32,7 @@ clean:
 deps:
 	@go mod download
 
-.PHONY: test
-## test: Run tests with verbose mode
-test:
-	@go test -v ./tests/*
+
 
 .PHONY: help
 all: help

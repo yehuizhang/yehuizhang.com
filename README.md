@@ -39,6 +39,10 @@
   - [go-gin-boilerplate](https://github.com/vsouza/go-gin-boilerplate)
   - [viper-config](https://github.com/spf13/viper)
   - [go.uuid](https://github.com/satori/go.uuid)
+  - Testing
+    - [Testify](https://github.com/stretchr/testify)
+    - [Gin unit test example](https://github.com/yemiwebby/golang-company-api/blob/main/main_test.go)
+    - [Github - Building and testing Go](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go)
 - Database
   - [Go-Redis](https://redis.uptrace.dev/)
   - [Go-Redis-Repo](https://github.com/go-redis/redis)
@@ -106,10 +110,3 @@ curl --location --request POST 'http://localhost:8080/login' \
     "message": "Error to retrieve userCredential"
 }
 ```
-
-## Testing
-
-### Reading
-
-- <https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go>
-  - Each test file within your project must end with `_test.go` and each test method must start with a `Test` prefix. This is a standard naming convention for a valid test.
