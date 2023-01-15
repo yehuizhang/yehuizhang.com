@@ -1,5 +1,7 @@
 # Go Webapp Using GIN
 
+[![CodeFactor](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver/badge)](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver)
+
 ## Tasks
 
 - Improve Registry to utilize db.pipelines/HSet
