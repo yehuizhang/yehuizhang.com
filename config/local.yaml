@@ -1,0 +1,6 @@
+db:
+  address: localhost:6379
+  password: my-password
+  default_db: 0
+server:
+  port: "localhost:8080"
