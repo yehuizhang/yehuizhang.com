@@ -1,6 +1,7 @@
 # Go Webapp Using GIN
 
 [![CodeFactor](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver/badge)](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver)
+[![codecov](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graph/badge.svg?token=fQ74xxW1ez)](https://codecov.io/gh/yehuizhang/go-zyh-webserver)
 
 ## Tasks
 
@@ -48,6 +49,8 @@
   - [Go-Redis-Repo](https://github.com/go-redis/redis)
 - Authentication
 - OAuth2
+- CI/CD
+  - CircleCI [example](https://github.com/codecov/example-go/blob/main/.circleci/config.yml)
 
 ## Sample Curls
 
@@ -110,3 +113,8 @@ curl --location --request POST 'http://localhost:8080/login' \
     "message": "Error to retrieve userCredential"
 }
 ```
+
+## CodeCov
+
+![CodeCov Graph - Sunburst](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/sunburst.svg?token=fQ74xxW1ez)
+![CodeCov Graph - Grid](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/tree.svg?token=fQ74xxW1ez)
