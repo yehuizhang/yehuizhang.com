@@ -120,3 +120,7 @@ curl --location --request POST 'http://localhost:8080/login' \
 
 ![CodeCov Graph - Sunburst](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/sunburst.svg?token=fQ74xxW1ez)
 ![CodeCov Graph - Grid](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/tree.svg?token=fQ74xxW1ez)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyehuizhang%2Fgo-zyh-webserver.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyehuizhang%2Fgo-zyh-webserver?ref=badge_large)
