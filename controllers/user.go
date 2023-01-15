@@ -33,7 +33,7 @@ func (u UserController) Signin(c *gin.Context) {
 
 	userInfo, err := user.GetUserInfo(userCredential.ID)
 	if err != nil {
-		log.Fatal("Unable to get UserInfo.", err)
+		log.Print("Unable to get UserInfo.", err)
 		c.Abort()
 		return
 	}
@@ -47,7 +47,7 @@ func (u UserController) Signup(c *gin.Context) {
 	userInfo, userCredential, err := userCredentialModel.Signup(c)
 
 	if err != nil {
-		log.Fatal("signup failed: ", err)
+		log.Print("signup failed: ", err)
 		c.Abort()
 		return
 	}
@@ -73,7 +73,7 @@ func (u UserController) UpdateInfo(c *gin.Context) {
 	userInfo, err = userInfoModel.AddOrUpdate(uid, userInfoInput)
 
 	if err != nil {
-		log.Fatal("Unable to update UserInfo", err)
+		log.Print("Unable to update UserInfo", err)
 		c.Abort()
 		return
 	}
@@ -85,7 +85,7 @@ func (u UserController) GetInfo(c *gin.Context) {
 	uid, ok := c.Get(user.UID)
 
 	if !ok {
-		log.Fatal("uid was not found")
+		log.Print("uid was not found", user.UID)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -93,7 +93,7 @@ func (u UserController) GetInfo(c *gin.Context) {
 	userInfo, err := user.GetUserInfo(uid.(string))
 
 	if err != nil {
-		log.Fatal("Unable to get UserInfo.", err)
+		log.Print("Unable to get UserInfo.", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
