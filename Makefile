@@ -4,12 +4,12 @@ VERSION=0.0.1
 .PHONY: test
 ## test: Run tests with verbose mode
 test:
-	@go test -v ./tests/*
+	@go test -v ./src/...
 
 .PHONY: test-cov
 ## test with coverage
 test-cov:
-	@go test ./tests -coverpkg=./... -race -covermode=atomic -coverprofile=coverage.out
+	@go test ./src/*** -coverpkg=./src/... -race -covermode=atomic -coverprofile=coverage.out
 
 ########## Following are unverified scripts
 .PHONY: build

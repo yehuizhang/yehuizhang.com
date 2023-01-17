@@ -67,63 +67,8 @@ Start application
 go run main.go
 ```
 
-Register new user account
-
-```sh
-curl --location --request POST 'http://localhost:8080/register' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "username": "valerie",
-    "password": "1234567"
-}'
-
-{
-    "user_id": "b8b0249c-8707-4b1b-b897-5739642fbc27",
-    "username": "valerie",
-    "password": "1234567",
-    "active": true,
-    "created_at": 1672741900752807800,
-    "updated_at": 1672741900752807800
-}
-```
-
-updateUserInfo
-
-```sh
-curl --location --request PUT 'http://localhost:8080/v1/user/info' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "id": "1d541f1d-3e09-49d2-bcbc-ebbf38fb327c",
-    "name": "Yehui Zhang",
-    "birthday": "2021-01-01"
-}'
-
-{
-    "name": "Yehui Zhang",
-    "birthday": "2021-01-01",
-    "updated_at": 1672742751180898700
-}
-```
-
-login
-
-```sh
-curl --location --request POST 'http://localhost:8080/login' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "username": "yehui",
-    "password": "123456"
-}'
-
-{
-    "error": "incorrect password",
-    "message": "Error to retrieve userCredential"
-}
-```
-
 ## CodeCov
 
-![CodeCov Graph - Sunburst](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/sunburst.svg?token=fQ74xxW1ez)
 ![CodeCov Graph - Grid](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/tree.svg?token=fQ74xxW1ez)
 
 ## License
