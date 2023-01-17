@@ -1,41 +1,44 @@
-NAME=go-webapp-gin
-VERSION=0.0.1
+NAME    = zyh-webserver
+VERSION = 0.0.1
+BUILD   = ./build
 
-.PHONY: test
-## test: Run tests with verbose mode
-test:
-	@go test -v ./src/...
-
-.PHONY: test-cov
-## test with coverage
-test-cov:
-	@go test ./src/*** -coverpkg=./src/... -race -covermode=atomic -coverprofile=coverage.out
-
-########## Following are unverified scripts
-.PHONY: build
 ## build: Compile the packages.
+.PHONY: build
 build:
-	@go build -o $(NAME)
+	@go build -o $(BUILD)/$(NAME) ./src
 
-.PHONY: run
 ## run: Build and Run in development mode.
+.PHONY: run
 run: build
-	@./$(NAME) -e local
+	@$(BUILD)/$(NAME) -env local
 
 .PHONY: run-prod
 ## run-prod: Build and Run in production mode.
 run-prod: build
-	@./$(NAME) -e production
+	@$(BUILD)/$(NAME) -env production
 
-.PHONY: clean
-## clean: Clean project and previous builds.
-clean:
-	@rm -f $(NAME)
+## test: Run tests with verbose mode
+.PHONY: test
+test:
+	@go test -v ./src/...
 
-.PHONY: deps
+## test with coverage
+.PHONY: test-cov
+test-cov:
+	@go test ./src/... -coverpkg=./src/... -race -covermode=atomic -coverprofile=coverage.out
+
 ## deps: Download modules
+.PHONY: deps
 deps:
 	@go mod download
+
+## clean: Clean project and previous builds.
+.PHONY: clean
+clean:
+	@rm -rf $(BUILD) *.out
+
+########## Following are unverified scripts
+
 
 
 
