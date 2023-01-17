@@ -11,8 +11,8 @@ import (
 	"github.com/go-redis/redis/v8"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
-	"yehuizhang.com/go-webapp-gin/db"
-	"yehuizhang.com/go-webapp-gin/forms"
+	"yehuizhang.com/go-webapp-gin/src/database"
+	"yehuizhang.com/go-webapp-gin/src/forms"
 )
 
 // ----------------------------------------------------------------
@@ -36,7 +36,15 @@ type UserCredential struct {
 	UpdatedAt int64  `json:"updated_at"`
 }
 
-func (uc UserCredential) Signup(c *gin.Context) (*UserInfo, *UserCredential, error) {
+type AuthHandler struct {
+	database *database.Database
+}
+
+func newAuthHandler(database *database.Database) *AuthHandler {
+	return &AuthHandler{database: database}
+}
+
+func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *UserCredential, error) {
 
 	credentialInput, err := readCredentialFromContext(c)
 
@@ -64,11 +72,9 @@ func (uc UserCredential) Signup(c *gin.Context) (*UserInfo, *UserCredential, err
 	encoded_userCredential, err := json.Marshal(userCredential)
 
 	if err != nil {
-		log.Fatal("Unable to convert UserCredential to json")
+		log.Panic("Unable to convert UserCredential to json")
 		return nil, nil, err
 	}
-
-	db := db.GetRedisDB()
 
 	dbCtx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancel()
@@ -82,7 +88,7 @@ func (uc UserCredential) Signup(c *gin.Context) (*UserInfo, *UserCredential, err
 		return nil, nil, err
 	}
 
-	_, err = db.Pipelined(dbCtx, func(p redis.Pipeliner) error {
+	_, err = ah.database.Redis.Pipelined(dbCtx, func(p redis.Pipeliner) error {
 		err := p.Set(dbCtx, createUserCredentialDbKey(userCredential.Username), encoded_userCredential, 0).Err()
 
 		if err != nil {
@@ -92,21 +98,20 @@ func (uc UserCredential) Signup(c *gin.Context) (*UserInfo, *UserCredential, err
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 		return nil, nil, err
 	}
 	return &userInfo, &userCredential, nil
 }
 
-func (uc UserCredential) Signin(c *gin.Context) (*UserCredential, error) {
+func (ah AuthHandler) Signin(c *gin.Context) (*UserCredential, error) {
 	credentialInput, err := readCredentialFromContext(c)
 
 	if err != nil {
 		return nil, err
 	}
 
-	db := db.GetRedisDB()
-	dbResult, err := db.Get(context.Background(), createUserCredentialDbKey(credentialInput.Username)).Result()
+	dbResult, err := ah.database.Redis.Get(context.Background(), createUserCredentialDbKey(credentialInput.Username)).Result()
 	switch {
 	case err == redis.Nil:
 		return nil, fmt.Errorf("user %s was not found", credentialInput.Username)

@@ -4,10 +4,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"yehuizhang.com/go-webapp-gin/models/user"
 	"yehuizhang.com/go-webapp-gin/pkg/ginsession"
+	"yehuizhang.com/go-webapp-gin/src/models/user"
 )
 
+// validate user's identify and set into context
 func Auth(c *gin.Context) {
 
 	store := ginsession.FromContext(c)

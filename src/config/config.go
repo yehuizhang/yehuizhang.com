@@ -6,23 +6,20 @@ import (
 	"github.com/spf13/viper"
 )
 
-var config *viper.Viper
+type Config = *viper.Viper
 
-func Init(env string) {
+func NewConfig(env string) Config {
 
-	config = viper.New()
+	config := viper.New()
 	config.SetConfigType("yaml")
 	config.SetConfigName(env)
-	config.AddConfigPath("../config/")
-	config.AddConfigPath("config/")
-	err := config.ReadInConfig()
-	if err != nil {
-		log.Fatal("error on parsing configuration file")
+	config.AddConfigPath("../../configs/")
+	config.AddConfigPath("configs/")
+	if err := config.ReadInConfig(); err != nil {
+		log.Panic("error on parsing configuration file")
 	}
 	log.Println("Status: Config initialization succeed")
-}
 
-func GetConfig() *viper.Viper {
 	return config
 }
 

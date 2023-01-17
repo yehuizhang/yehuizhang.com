@@ -1,4 +1,4 @@
 {
   "cSpell.words": ["signup", "yehuizhang"],
-  "cSpell.ignoreRegExpList": ["\"github.com[\\w\\d/\\-]*\"$"]
+  "cSpell.ignoreRegExpList": ["\"github.com[\\w\\d/\\-]*\"$", "^//.*"]
 }

@@ -39,6 +39,11 @@
 - Library
   - [validator](https://github.com/go-playground/validator)
     - [Doc](https://pkg.go.dev/github.com/go-playground/validator/v10)
+  - Logger
+    - [Zap](https://github.com/uber-go/zap)
+  - Dependency Injection
+    - [dig](https://github.com/uber-go/dig)
+    - [wire](https://github.com/google/wire)
   - [go-gin-boilerplate](https://github.com/vsouza/go-gin-boilerplate)
   - [viper-config](https://github.com/spf13/viper)
   - [go.uuid](https://github.com/satori/go.uuid)
@@ -121,6 +126,6 @@ curl --location --request POST 'http://localhost:8080/login' \
 ![CodeCov Graph - Sunburst](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/sunburst.svg?token=fQ74xxW1ez)
 ![CodeCov Graph - Grid](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graphs/tree.svg?token=fQ74xxW1ez)
 
-
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyehuizhang%2Fgo-zyh-webserver.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyehuizhang%2Fgo-zyh-webserver?ref=badge_large)

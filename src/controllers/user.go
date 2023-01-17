@@ -5,19 +5,19 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"yehuizhang.com/go-webapp-gin/forms"
-	"yehuizhang.com/go-webapp-gin/models/user"
-	"yehuizhang.com/go-webapp-gin/util/auth"
+	"yehuizhang.com/go-webapp-gin/src/forms"
+	"yehuizhang.com/go-webapp-gin/src/models/user"
+	"yehuizhang.com/go-webapp-gin/src/utils/auth"
 )
 
 type UserController struct{}
 
-var userCredentialModel = new(user.UserCredential)
-var userInfoModel = new(user.UserInfo)
+var authHandler = new(user.AuthHandler)
+var userInfoHandler = new(user.UserInfoHandler)
 
 func (u UserController) Signin(c *gin.Context) {
 
-	userCredential, err := userCredentialModel.Signin(c)
+	userCredential, err := authHandler.Signin(c)
 
 	if err != nil {
 		if err == user.PasswordNotMatch {
@@ -31,7 +31,7 @@ func (u UserController) Signin(c *gin.Context) {
 		return
 	}
 
-	userInfo, err := user.GetUserInfo(userCredential.ID)
+	userInfo, err := userInfoHandler.GetUserInfo(userCredential.ID)
 	if err != nil {
 		log.Print("Unable to get UserInfo.", err)
 		c.Abort()
@@ -44,7 +44,7 @@ func (u UserController) Signin(c *gin.Context) {
 }
 
 func (u UserController) Signup(c *gin.Context) {
-	userInfo, userCredential, err := userCredentialModel.Signup(c)
+	userInfo, userCredential, err := authHandler.Signup(c)
 
 	if err != nil {
 		log.Print("signup failed: ", err)
@@ -70,7 +70,7 @@ func (u UserController) UpdateInfo(c *gin.Context) {
 	}
 
 	var userInfo *user.UserInfo
-	userInfo, err = userInfoModel.AddOrUpdate(uid, userInfoInput)
+	userInfo, err = userInfoHandler.AddOrUpdate(uid, userInfoInput)
 
 	if err != nil {
 		log.Print("Unable to update UserInfo", err)
@@ -90,7 +90,7 @@ func (u UserController) GetInfo(c *gin.Context) {
 		return
 	}
 
-	userInfo, err := user.GetUserInfo(uid.(string))
+	userInfo, err := userInfoHandler.GetUserInfo(uid.(string))
 
 	if err != nil {
 		log.Print("Unable to get UserInfo.", err)
