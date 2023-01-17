@@ -18,11 +18,6 @@ func main() {
 }
 
 func parseFlag() string {
-
-	// flag.Usage = func() {
-	// 	fmt.Println("Usage: server -env {local|test|development|production}")
-	// 	os.Exit(1)
-	// }
 	environment := flag.String("env", "local", "environment: {local|test|development|production}")
 	flag.Parse()
 	fmt.Printf("Environment: %s\n", *environment)
