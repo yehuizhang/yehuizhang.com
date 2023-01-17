@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/google/wire"
 	"log"
 	"net/http"
 
@@ -9,6 +10,8 @@ import (
 	"yehuizhang.com/go-webapp-gin/src/models/user"
 	"yehuizhang.com/go-webapp-gin/src/utils/auth"
 )
+
+var UserControllerSet = wire.NewSet(wire.Struct(new(UserController), "*"))
 
 type UserController struct{}
 

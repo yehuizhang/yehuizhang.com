@@ -2,33 +2,39 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 	"yehuizhang.com/go-webapp-gin/src/controllers"
 	"yehuizhang.com/go-webapp-gin/src/database"
 	"yehuizhang.com/go-webapp-gin/src/middlewares"
 )
 
-func NewRouter(database *database.Database) *gin.Engine {
-	router := gin.New()
+var RouterSet = wire.NewSet(wire.Struct(new(Router), "*"), controllers.ControllerSet)
 
-	router.Use(gin.Logger())
-	router.Use(gin.Recovery())
-	router.Use(middlewares.Session(database))
+type Router struct {
+	HealthController *controllers.HealthController
+	UserController   *controllers.UserController
+	database         *database.Database
+}
 
-	health := new(controllers.HealthController)
-	user := new(controllers.UserController)
+func (r *Router) RegisterAPI(app *gin.Engine) {
+	apiGroup := app.Group("/api")
 
-	router.GET("/health", health.Status)
-	router.POST("/register", user.Signup)
-	router.POST("/login", user.Signin)
-	v1 := router.Group("v1")
+	apiGroup.Use(gin.Logger())
+	apiGroup.Use(gin.Recovery())
+	apiGroup.Use(middlewares.Session(r.database))
+
+	apiGroup.GET("/health", r.HealthController.Get)
+	v1 := apiGroup.Group("v1")
 	{
+
+		v1.POST("/register", r.UserController.Signup)
+		v1.POST("/login", r.UserController.Signin)
+
 		v1.Use(middlewares.Auth)
 		userGroup := v1.Group("user")
 		{
-			userGroup.GET("/info", user.GetInfo)
-			userGroup.PUT("/info", user.UpdateInfo)
+			userGroup.GET("/info", r.UserController.GetInfo)
+			userGroup.PUT("/info", r.UserController.UpdateInfo)
 		}
 	}
-
-	return router
 }

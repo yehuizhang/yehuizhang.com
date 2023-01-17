@@ -11,7 +11,7 @@ type Database struct {
 	Redis *redis.Client
 }
 
-func NewDatabase(c config.Config) *Database {
+func InitDatabase(c config.Config) *Database {
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     c.GetString("db.address"),

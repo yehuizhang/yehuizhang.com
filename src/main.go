@@ -1,25 +1,16 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-
-	"yehuizhang.com/go-webapp-gin/src/config"
-	"yehuizhang.com/go-webapp-gin/src/database"
+	"github.com/google/wire"
 	"yehuizhang.com/go-webapp-gin/src/server"
 )
 
-func main() {
-
-	env := parseFlag()
-	c := config.NewConfig(env)
-	db := database.NewDatabase(c)
-	server.NewServer(c, db)
+type Injector struct {
+	server *server.Server
 }
 
-func parseFlag() string {
-	environment := flag.String("env", "local", "environment: {local|test|development|production}")
-	flag.Parse()
-	fmt.Printf("Environment: %s\n", *environment)
-	return *environment
+var InjectorSet = wire.NewSet(wire.Struct(new(Injector), "*"))
+
+func main() {
+
 }
