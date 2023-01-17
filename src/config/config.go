@@ -1,31 +1,25 @@
 package config
 
 import (
-	"log"
+	"fmt"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 
 	"github.com/spf13/viper"
 )
 
 type Config = *viper.Viper
 
-func NewConfig(env string) Config {
+func InitConfig(flagParser *FlagParser, logger *logger.Logger) (Config, error) {
 
 	config := viper.New()
 	config.SetConfigType("yaml")
-	config.SetConfigName(env)
+	config.SetConfigName(flagParser.env)
 	config.AddConfigPath("../../config/")
 	config.AddConfigPath("config/")
 	if err := config.ReadInConfig(); err != nil {
-		log.Panic("error on parsing configuration file")
+		return nil, fmt.Errorf("error on parsing configuration file")
 	}
-	log.Println("Status: Config initialization succeed")
+	logger.Info("Status: Config initialization succeed")
 
-	return config
+	return config, nil
 }
-
-// func relativePath(basedir string, path *string) {
-// 	p := *path
-// 	if len(p) > 0 && p[0] != '/' {
-// 		*path = filepath.Join(basedir, p)
-// 	}
-// }

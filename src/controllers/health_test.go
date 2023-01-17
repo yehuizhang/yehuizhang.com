@@ -1,20 +1,25 @@
 package controllers
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"yehuizhang.com/go-webapp-gin/src/tests"
 )
+
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	return r
+}
 
 func TestHealthController_Status(t *testing.T) {
 
-	router := tests.SetupRouter()
+	router := setupRouter()
 	health := new(HealthController)
 
-	router.GET("/health", health.Status)
+	router.GET("/health", health.Get)
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/health", nil)
 	router.ServeHTTP(w, req)

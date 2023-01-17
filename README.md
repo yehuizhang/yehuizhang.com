@@ -33,6 +33,9 @@
 
 ## Tech Stack
 
+- Go
+  - [golang/go wiki](https://github.com/golang/go/wiki)
+  - [Effective go](https://go.dev/doc/effective_go)
 - Web Framework
   - [gin](https://github.com/gin-gonic/gin)
     - [Doc](https://gin-gonic.com/)
@@ -44,6 +47,8 @@
   - Dependency Injection
     - [dig](https://github.com/uber-go/dig)
     - [wire](https://github.com/google/wire)
+      - [Guide](https://github.com/google/wire/blob/v0.5.0/docs/guide.md)
+      - [Introductory blog post](https://go.dev/blog/wire)
   - [go-gin-boilerplate](https://github.com/vsouza/go-gin-boilerplate)
   - [viper-config](https://github.com/spf13/viper)
   - [go.uuid](https://github.com/satori/go.uuid)
@@ -53,11 +58,15 @@
     - [Github - Building and testing Go](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go)
 - Database
   - [Go-Redis](https://redis.uptrace.dev/)
+    - [Redis rate limiter](https://github.com/go-redis/redis_rate)
   - [Go-Redis-Repo](https://github.com/go-redis/redis)
 - Authentication
 - OAuth2
 - CI/CD
   - CircleCI [example](https://github.com/codecov/example-go/blob/main/.circleci/config.yml)
+- Documentation
+  - [Emoji](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md)
+  - [Markdown Syntax](https://www.markdownguide.org/extended-syntax)
 
 ## Sample Curls
 

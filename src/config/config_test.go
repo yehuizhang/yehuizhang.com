@@ -1,26 +1,23 @@
 package config
 
 import (
-	"reflect"
+	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zaptest/observer"
 	"testing"
 )
 
-func TestNewConfig(t *testing.T) {
-	type args struct {
-		env string
-	}
-	tests := []struct {
-		name string
-		args args
-		want Config
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewConfig(tt.args.env); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewConfig() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+func Test_InitConfig_OnSuccess(t *testing.T) {
+	observedZapCore, observedLogs := observer.New(zap.InfoLevel)
+	observedLogger := zap.New(observedZapCore).Sugar()
+	config, _ := InitConfig(&FlagParser{env: "local"}, observedLogger)
+	assert.Equal(t, "localhost:8080", config.GetString("server.port"))
+	assert.Equal(t, zap.InfoLevel, observedLogs.All()[0].Level)
+}
+
+func Test_InitConfig_MissingFail(t *testing.T) {
+	observedZapCore, _ := observer.New(zap.InfoLevel)
+	observedLogger := zap.New(observedZapCore).Sugar()
+	_, err := InitConfig(&FlagParser{env: "invalid"}, observedLogger)
+	assert.Errorf(t, err, "error on parsing configuration file")
 }
