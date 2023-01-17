@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"yehuizhang.com/go-webapp-gin/db"
-	"yehuizhang.com/go-webapp-gin/forms"
+	"yehuizhang.com/go-webapp-gin/src/database"
+	"yehuizhang.com/go-webapp-gin/src/forms"
 )
 
 type UserInfo struct {
@@ -19,8 +19,15 @@ type UserInfo struct {
 	UpdatedAt int64  `json:"updated_at,omitempty"`
 }
 
-func (h UserInfo) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, error) {
-	db := db.GetRedisDB()
+type UserInfoHandler struct {
+	database *database.Database
+}
+
+func NewUserInfoHandler(database *database.Database) *UserInfoHandler {
+	return &UserInfoHandler{database: database}
+}
+
+func (ui UserInfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, error) {
 
 	userInfo := UserInfo{
 		Name:      input.Name,
@@ -35,7 +42,7 @@ func (h UserInfo) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, erro
 	if err != nil {
 		return nil, err
 	}
-	err = db.Set(context.Background(), createUserInfoDbKey(uid), encoded_userInfo, 0).Err()
+	err = ui.database.Redis.Set(context.Background(), createUserInfoDbKey(uid), encoded_userInfo, 0).Err()
 
 	if err != nil {
 		return nil, fmt.Errorf("error when try to save data to database %s", err)
@@ -44,10 +51,9 @@ func (h UserInfo) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, erro
 	return &userInfo, nil
 }
 
-func GetUserInfo(uid string) (*UserInfo, error) {
-	db := db.GetRedisDB()
+func (ui UserInfoHandler) GetUserInfo(uid string) (*UserInfo, error) {
 
-	data, err := db.Get(context.Background(), createUserInfoDbKey(uid)).Result()
+	data, err := ui.database.Redis.Get(context.Background(), createUserInfoDbKey(uid)).Result()
 	if err != nil {
 		return nil, fmt.Errorf("unable to retrieve UserInfo from DB for user %s. %s", uid, err)
 	}

@@ -6,15 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-session/redis/v3"
 	"github.com/go-session/session/v3"
-	"yehuizhang.com/go-webapp-gin/db"
 	"yehuizhang.com/go-webapp-gin/pkg/ginsession"
+	"yehuizhang.com/go-webapp-gin/src/database"
 )
 
 // Cookie expires in 7 days. Session is removed from DB in 2 hours so it has to be refreshed to keep user live
-func Session() gin.HandlerFunc {
-
-	db := db.GetRedisDB()
-
+func Session(database *database.Database) gin.HandlerFunc {
 	sessionConfig := ginsession.Config{
 		ErrorHandleFunc: func(c *gin.Context, err error) {
 			c.AbortWithError(http.StatusInternalServerError, err)
@@ -32,7 +29,7 @@ func Session() gin.HandlerFunc {
 	sessionLifeTime := int64(3600 * 2)
 
 	return ginsession.NewWithConfig(
-		sessionConfig, session.SetStore(redis.NewRedisStoreWithCli(db, "user:session:")),
+		sessionConfig, session.SetStore(redis.NewRedisStoreWithCli(database.Redis, "user:session:")),
 		session.SetSecure(false), session.SetSameSite(http.SameSiteLaxMode),
 		session.SetCookieName("sid"), session.SetCookieLifeTime(cookieLifeTime),
 		session.SetExpired(sessionLifeTime))

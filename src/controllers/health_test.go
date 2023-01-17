@@ -1,4 +1,4 @@
-package tests
+package controllers
 
 import (
 	"net/http"
@@ -6,13 +6,13 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"yehuizhang.com/go-webapp-gin/controllers"
+	"yehuizhang.com/go-webapp-gin/src/tests"
 )
 
 func TestHealthController_Status(t *testing.T) {
 
-	router := SetupRouter()
-	health := new(controllers.HealthController)
+	router := tests.SetupRouter()
+	health := new(HealthController)
 
 	router.GET("/health", health.Status)
 	w := httptest.NewRecorder()

@@ -2,16 +2,17 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"yehuizhang.com/go-webapp-gin/controllers"
-	"yehuizhang.com/go-webapp-gin/middlewares"
+	"yehuizhang.com/go-webapp-gin/src/controllers"
+	"yehuizhang.com/go-webapp-gin/src/database"
+	"yehuizhang.com/go-webapp-gin/src/middlewares"
 )
 
-func NewRouter() *gin.Engine {
+func NewRouter(database *database.Database) *gin.Engine {
 	router := gin.New()
 
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-	router.Use(middlewares.Session())
+	router.Use(middlewares.Session(database))
 
 	health := new(controllers.HealthController)
 	user := new(controllers.UserController)
