@@ -4,23 +4,23 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
-	"log"
+	"github.com/spf13/viper"
 	"os/signal"
 	"syscall"
-
-	"yehuizhang.com/go-webapp-gin/src/config"
-	"yehuizhang.com/go-webapp-gin/src/database"
+	"yehuizhang.com/go-webapp-gin/pkg/database"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
 var ServerSet = wire.NewSet(wire.Struct(new(Server), "*"), RouterSet)
 
 type Server struct {
 	router   *Router
-	config   config.Config
+	config   *viper.Viper
 	database *database.Database
+	log      *logger.Logger
 }
 
-// Graceful-shutdown : https://github.com/gin-gonic/examples/blob/master/graceful-shutdown/graceful-shutdown/notify-with-context/server.go
+// InitGinEngine Graceful-shutdown : https://github.com/gin-gonic/examples/blob/master/graceful-shutdown/graceful-shutdown/notify-with-context/server.go
 func (s Server) InitGinEngine() *gin.Engine {
 
 	app := gin.New()
@@ -38,7 +38,7 @@ func (s Server) InitGinEngine() *gin.Engine {
 
 	s.database.Redis.Close()
 	stop()
-	log.Println("shutting down gracefully, press Ctrl+C again to force")
+	s.log.Info("shutting down gracefully, press Ctrl+C again to force")
 
 	return app
 }
