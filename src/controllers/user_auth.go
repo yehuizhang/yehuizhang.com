@@ -13,14 +13,14 @@ import (
 var UserAuthControllerSet = wire.NewSet(wire.Struct(new(UserAuthController), "*"))
 
 type UserAuthController struct {
-	logger      *logger.Logger
-	infoHandler *user.InfoHandler
-	authHandler *user.AuthHandler
+	Logger      *logger.Logger
+	InfoHandler *user.InfoHandler
+	AuthHandler *user.AuthHandler
 }
 
 func (ua *UserAuthController) SignUp(c *gin.Context) {
 
-	userCredential, err := ua.authHandler.SignIn(c)
+	userCredential, err := ua.AuthHandler.SignIn(c)
 	if err != nil {
 		if err == user.PasswordNotMatch {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
@@ -32,9 +32,9 @@ func (ua *UserAuthController) SignUp(c *gin.Context) {
 		return
 	}
 
-	userInfo, err := ua.infoHandler.GetUserInfo(userCredential.ID)
+	userInfo, err := ua.InfoHandler.GetUserInfo(userCredential.ID)
 	if err != nil {
-		ua.logger.Errorw("Unable to get UserInfo.", "error:", err)
+		ua.Logger.Errorw("Unable to get UserInfo.", "error:", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -43,10 +43,10 @@ func (ua *UserAuthController) SignUp(c *gin.Context) {
 }
 
 func (ua *UserAuthController) Signup(c *gin.Context) {
-	userInfo, userCredential, err := ua.authHandler.Signup(c)
+	userInfo, userCredential, err := ua.AuthHandler.Signup(c)
 
 	if err != nil {
-		ua.logger.Errorw("signup failed: ", "error:", err)
+		ua.Logger.Errorw("signup failed: ", "error:", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}

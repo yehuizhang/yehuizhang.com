@@ -28,37 +28,37 @@ func BuildInjector() (Injector, func(), error) {
 	}
 	databaseDatabase := database.InitDatabase(viper, sugaredLogger)
 	infoHandler := &user.InfoHandler{
-		database: databaseDatabase,
-		log:      sugaredLogger,
+		Database: databaseDatabase,
+		Log:      sugaredLogger,
 	}
 	authHandler := &user.AuthHandler{
-		database: databaseDatabase,
-		log:      sugaredLogger,
+		Database: databaseDatabase,
+		Log:      sugaredLogger,
 	}
 	userAuthController := &controllers.UserAuthController{
-		logger:      sugaredLogger,
-		infoHandler: infoHandler,
-		authHandler: authHandler,
+		Logger:      sugaredLogger,
+		InfoHandler: infoHandler,
+		AuthHandler: authHandler,
 	}
 	userInfoController := &controllers.UserInfoController{
-		logger:      sugaredLogger,
-		infoHandler: infoHandler,
+		Logger:      sugaredLogger,
+		InfoHandler: infoHandler,
 	}
 	router := &server.Router{
-		healthController:   healthController,
-		userAuthController: userAuthController,
-		userInfoController: userInfoController,
-		database:           databaseDatabase,
+		HealthController:   healthController,
+		UserAuthController: userAuthController,
+		UserInfoController: userInfoController,
+		Database:           databaseDatabase,
 	}
 	serverServer := &server.Server{
-		router:   router,
-		config:   viper,
-		database: databaseDatabase,
-		log:      sugaredLogger,
+		Router:   router,
+		Config:   viper,
+		Database: databaseDatabase,
+		Log:      sugaredLogger,
 	}
 	injector := Injector{
-		server: serverServer,
-		log:    sugaredLogger,
+		Server: serverServer,
+		Log:    sugaredLogger,
 	}
 	return injector, func() {
 	}, nil
