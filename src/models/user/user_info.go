@@ -24,8 +24,8 @@ type UserInfo struct {
 }
 
 type InfoHandler struct {
-	database *database.Database
-	log      *logger.Logger
+	Database *database.Database
+	Log      *logger.Logger
 }
 
 func (ui InfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, error) {
@@ -43,7 +43,7 @@ func (ui InfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, 
 	if err != nil {
 		return nil, err
 	}
-	err = ui.database.Redis.Set(context.Background(), createUserInfoDbKey(uid), encodedUserinfo, 0).Err()
+	err = ui.Database.Redis.Set(context.Background(), createUserInfoDbKey(uid), encodedUserinfo, 0).Err()
 
 	if err != nil {
 		return nil, fmt.Errorf("error when try to save data to database %s", err)
@@ -54,7 +54,7 @@ func (ui InfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, 
 
 func (ui InfoHandler) GetUserInfo(uid string) (*UserInfo, error) {
 
-	data, err := ui.database.Redis.Get(context.Background(), createUserInfoDbKey(uid)).Result()
+	data, err := ui.Database.Redis.Get(context.Background(), createUserInfoDbKey(uid)).Result()
 	if err != nil {
 		return nil, fmt.Errorf("unable to retrieve UserInfo from DB for user %s. %s", uid, err)
 	}

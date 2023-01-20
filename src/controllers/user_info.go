@@ -12,15 +12,15 @@ import (
 var UserInfoControllerSet = wire.NewSet(wire.Struct(new(UserInfoController), "*"))
 
 type UserInfoController struct {
-	logger      *logger.Logger
-	infoHandler *user.InfoHandler
+	Logger      *logger.Logger
+	InfoHandler *user.InfoHandler
 }
 
 func (ui *UserInfoController) Get(c *gin.Context) {
 	uid := c.GetString(user.UID)
-	userInfo, err := ui.infoHandler.GetUserInfo(uid)
+	userInfo, err := ui.InfoHandler.GetUserInfo(uid)
 	if err != nil {
-		ui.logger.Errorw("Unable to get UserInfo.", "error: ", err)
+		ui.Logger.Errorw("Unable to get UserInfo.", "error: ", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -34,16 +34,16 @@ func (ui *UserInfoController) CreateOrUpdate(c *gin.Context) {
 	err := c.Bind(&userInfoInput)
 
 	if err != nil {
-		ui.logger.Errorw("Unable to read UserInfo from body: ", "error:", err)
+		ui.Logger.Errorw("Unable to read UserInfo from body: ", "error:", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
 	var userInfo *user.UserInfo
-	userInfo, err = ui.infoHandler.AddOrUpdate(uid, userInfoInput)
+	userInfo, err = ui.InfoHandler.AddOrUpdate(uid, userInfoInput)
 
 	if err != nil {
-		ui.logger.Errorw("Unable to update UserInfo", "error:", err)
+		ui.Logger.Errorw("Unable to update UserInfo", "error:", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}

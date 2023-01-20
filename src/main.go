@@ -7,8 +7,8 @@ import (
 )
 
 type Injector struct {
-	server *server.Server
-	log    *logger.Logger
+	Server *server.Server
+	Log    *logger.Logger
 }
 
 var InjectorSet = wire.NewSet(wire.Struct(new(Injector), "*"))
@@ -17,7 +17,7 @@ func main() {
 	injector, _, err := BuildInjector()
 
 	if err != nil {
-		injector.log.Error(err)
+		injector.Log.Error(err)
 	}
-	injector.server.InitGinEngine()
+	injector.Server.InitGinEngine()
 }

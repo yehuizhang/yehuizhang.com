@@ -28,8 +28,8 @@ type Credential struct {
 }
 
 type AuthHandler struct {
-	database *database.Database
-	log      *logger.Logger
+	Database *database.Database
+	Log      *logger.Logger
 }
 
 func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *Credential, error) {
@@ -55,7 +55,7 @@ func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *Credential, error) {
 	encodedCredential, err := json.Marshal(userCredential)
 
 	if err != nil {
-		ah.log.Panic("Unable to convert UserCredential to json")
+		ah.Log.Panic("Unable to convert UserCredential to json")
 		return nil, nil, err
 	}
 
@@ -71,7 +71,7 @@ func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *Credential, error) {
 		return nil, nil, err
 	}
 
-	_, err = ah.database.Redis.Pipelined(dbCtx, func(p redis.Pipeliner) error {
+	_, err = ah.Database.Redis.Pipelined(dbCtx, func(p redis.Pipeliner) error {
 		err := p.Set(dbCtx, createUserCredentialDbKey(userCredential.Username), encodedCredential, 0).Err()
 
 		if err != nil {
@@ -81,7 +81,7 @@ func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *Credential, error) {
 	})
 
 	if err != nil {
-		ah.log.Panic(err)
+		ah.Log.Panic(err)
 		return nil, nil, err
 	}
 	return &userInfo, &userCredential, nil
@@ -94,7 +94,7 @@ func (ah AuthHandler) SignIn(c *gin.Context) (*Credential, error) {
 		return nil, err
 	}
 
-	dbResult, err := ah.database.Redis.Get(context.Background(), createUserCredentialDbKey(credentialInput.Username)).Result()
+	dbResult, err := ah.Database.Redis.Get(context.Background(), createUserCredentialDbKey(credentialInput.Username)).Result()
 	switch {
 	case err == redis.Nil:
 		return nil, fmt.Errorf("user %s was not found", credentialInput.Username)
