@@ -1,4 +1,4 @@
-package config
+package flag_parser
 
 import (
 	"flag"
@@ -6,7 +6,7 @@ import (
 )
 
 type FlagParser struct {
-	env string
+	Env string
 }
 
 func InitFlagParser() *FlagParser {
@@ -14,5 +14,5 @@ func InitFlagParser() *FlagParser {
 	flag.Parse()
 	fmt.Printf("Environment: %s\n", *env)
 
-	return &FlagParser{env: *env}
+	return &FlagParser{Env: *env}
 }

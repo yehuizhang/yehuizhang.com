@@ -2,18 +2,17 @@ package config
 
 import (
 	"fmt"
+	"yehuizhang.com/go-webapp-gin/pkg/flag_parser"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 
 	"github.com/spf13/viper"
 )
 
-type Config = *viper.Viper
-
-func InitConfig(flagParser *FlagParser, logger *logger.Logger) (Config, error) {
+func InitConfig(flagParser *flag_parser.FlagParser, logger *logger.Logger) (*viper.Viper, error) {
 
 	config := viper.New()
 	config.SetConfigType("yaml")
-	config.SetConfigName(flagParser.env)
+	config.SetConfigName(flagParser.Env)
 	config.AddConfigPath("../../config/")
 	config.AddConfigPath("config/")
 	if err := config.ReadInConfig(); err != nil {

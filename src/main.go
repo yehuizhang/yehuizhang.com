@@ -2,11 +2,14 @@ package main
 
 import (
 	"github.com/google/wire"
-	"yehuizhang.com/go-webapp-gin/src/server"
+	"github.com/spf13/viper"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
 type Injector struct {
-	server *server.Server
+	//server *server.Server
+	logger *logger.Logger
+	config *viper.Viper
 }
 
 var InjectorSet = wire.NewSet(wire.Struct(new(Injector), "*"))
