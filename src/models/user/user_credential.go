@@ -4,30 +4,21 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"github.com/google/wire"
 	"time"
+	"yehuizhang.com/go-webapp-gin/pkg/database"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
-	"yehuizhang.com/go-webapp-gin/src/database"
 	"yehuizhang.com/go-webapp-gin/src/forms"
 )
 
-// ----------------------------------------------------------------
-const PasswordNotMatch = UserCredentialError("PasswordNotMatch")
+var AuthHandlerSet = wire.NewSet(wire.Struct(new(AuthHandler), "*"))
 
-type UserCredentialError string
-
-func (e UserCredentialError) Error() string {
-	return string("UserCredentialError: " + e)
-}
-
-func (UserCredentialError) UserCredentialError() {}
-
-// ----------------------------------------------------------------
-type UserCredential struct {
+type Credential struct {
 	ID        string `json:"user_id,omitempty"`
 	Username  string `json:"username"`
 	Password  string `json:"password"`
@@ -38,29 +29,21 @@ type UserCredential struct {
 
 type AuthHandler struct {
 	database *database.Database
+	log      *logger.Logger
 }
 
-func newAuthHandler(database *database.Database) *AuthHandler {
-	return &AuthHandler{database: database}
-}
-
-func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *UserCredential, error) {
-
+func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *Credential, error) {
 	credentialInput, err := readCredentialFromContext(c)
-
 	if err != nil {
 		return nil, nil, err
 	}
-
 	id := uuid.NewV4()
-
 	encryptedPassword, err := bcrypt.GenerateFromPassword([]byte(credentialInput.Password), 4)
-
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to encrypt user's password. %s", err)
 	}
 
-	userCredential := UserCredential{
+	userCredential := Credential{
 		ID:        id.String(),
 		Username:  credentialInput.Username,
 		Password:  string(encryptedPassword),
@@ -69,10 +52,10 @@ func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *UserCredential, error)
 		UpdatedAt: time.Now().UnixNano(),
 	}
 
-	encoded_userCredential, err := json.Marshal(userCredential)
+	encodedCredential, err := json.Marshal(userCredential)
 
 	if err != nil {
-		log.Panic("Unable to convert UserCredential to json")
+		ah.log.Panic("Unable to convert UserCredential to json")
 		return nil, nil, err
 	}
 
@@ -89,7 +72,7 @@ func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *UserCredential, error)
 	}
 
 	_, err = ah.database.Redis.Pipelined(dbCtx, func(p redis.Pipeliner) error {
-		err := p.Set(dbCtx, createUserCredentialDbKey(userCredential.Username), encoded_userCredential, 0).Err()
+		err := p.Set(dbCtx, createUserCredentialDbKey(userCredential.Username), encodedCredential, 0).Err()
 
 		if err != nil {
 			return err
@@ -98,13 +81,13 @@ func (ah AuthHandler) Signup(c *gin.Context) (*UserInfo, *UserCredential, error)
 	})
 
 	if err != nil {
-		log.Panic(err)
+		ah.log.Panic(err)
 		return nil, nil, err
 	}
 	return &userInfo, &userCredential, nil
 }
 
-func (ah AuthHandler) Signin(c *gin.Context) (*UserCredential, error) {
+func (ah AuthHandler) SignIn(c *gin.Context) (*Credential, error) {
 	credentialInput, err := readCredentialFromContext(c)
 
 	if err != nil {
@@ -119,7 +102,7 @@ func (ah AuthHandler) Signin(c *gin.Context) (*UserCredential, error) {
 		return nil, fmt.Errorf("failed to retrieve credential information. %s", err)
 	}
 
-	var storedCredential UserCredential
+	var storedCredential Credential
 	err = json.Unmarshal([]byte(dbResult), &storedCredential)
 	if err != nil {
 		return nil, fmt.Errorf("unable to parse UserCredential data from DB. %s", err)

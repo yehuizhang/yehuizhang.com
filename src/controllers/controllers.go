@@ -4,5 +4,6 @@ import "github.com/google/wire"
 
 var ControllerSet = wire.NewSet(
 	HealthControllerSet,
-	UserControllerSet,
+	UserAuthControllerSet,
+	UserInfoControllerSet,
 )

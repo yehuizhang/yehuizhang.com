@@ -1,24 +1,23 @@
 package database
 
 import (
-	"log"
-
 	"github.com/go-redis/redis/v8"
-	"yehuizhang.com/go-webapp-gin/src/config"
+	"github.com/spf13/viper"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
 type Database struct {
 	Redis *redis.Client
 }
 
-func InitDatabase(c config.Config) *Database {
+func InitDatabase(c *viper.Viper, log *logger.Logger) *Database {
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     c.GetString("db.address"),
 		Password: c.GetString("db.password"),
 		DB:       c.GetInt("db.default_db"),
 	})
-	log.Println("Status: DB initialization succeed")
+	log.Info("DB initialization succeed")
 
 	return &Database{Redis: redisClient}
 }

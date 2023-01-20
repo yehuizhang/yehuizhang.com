@@ -4,12 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/google/wire"
 	"time"
+	"yehuizhang.com/go-webapp-gin/pkg/database"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 
 	"github.com/go-redis/redis/v8"
-	"yehuizhang.com/go-webapp-gin/src/database"
 	"yehuizhang.com/go-webapp-gin/src/forms"
 )
+
+var InfoHandlerSet = wire.NewSet(wire.Struct(new(InfoHandler), "*"))
 
 type UserInfo struct {
 	Name      string `json:"name"`
@@ -19,15 +23,12 @@ type UserInfo struct {
 	UpdatedAt int64  `json:"updated_at,omitempty"`
 }
 
-type UserInfoHandler struct {
+type InfoHandler struct {
 	database *database.Database
+	log      *logger.Logger
 }
 
-func NewUserInfoHandler(database *database.Database) *UserInfoHandler {
-	return &UserInfoHandler{database: database}
-}
-
-func (ui UserInfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, error) {
+func (ui InfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserInfo, error) {
 
 	userInfo := UserInfo{
 		Name:      input.Name,
@@ -37,12 +38,12 @@ func (ui UserInfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserIn
 		UpdatedAt: time.Now().UnixNano(),
 	}
 
-	encoded_userInfo, err := json.Marshal(userInfo)
+	encodedUserinfo, err := json.Marshal(userInfo)
 
 	if err != nil {
 		return nil, err
 	}
-	err = ui.database.Redis.Set(context.Background(), createUserInfoDbKey(uid), encoded_userInfo, 0).Err()
+	err = ui.database.Redis.Set(context.Background(), createUserInfoDbKey(uid), encodedUserinfo, 0).Err()
 
 	if err != nil {
 		return nil, fmt.Errorf("error when try to save data to database %s", err)
@@ -51,7 +52,7 @@ func (ui UserInfoHandler) AddOrUpdate(uid string, input forms.UserInfo) (*UserIn
 	return &userInfo, nil
 }
 
-func (ui UserInfoHandler) GetUserInfo(uid string) (*UserInfo, error) {
+func (ui InfoHandler) GetUserInfo(uid string) (*UserInfo, error) {
 
 	data, err := ui.database.Redis.Get(context.Background(), createUserInfoDbKey(uid)).Result()
 	if err != nil {
