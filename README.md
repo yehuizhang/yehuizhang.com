@@ -19,6 +19,13 @@
 ## Development
 - [Development Environment Setup](/docs/dev-setup.md)
 
+Start application
+
+```shell
+cd src
+go run main.go wire_gen.go
+```
+
 ## Design
 
 - [Password Authentication](https://www.sohamkamani.com/golang/password-authentication-and-storage/)
@@ -70,14 +77,6 @@
 - Documentation
   - [Emoji](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md)
   - [Markdown Syntax](https://www.markdownguide.org/extended-syntax)
-
-## Sample Curls
-
-Start application
-
-```sh
-go run main.go
-```
 
 ## CodeCov
 

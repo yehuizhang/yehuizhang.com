@@ -19,5 +19,6 @@ func main() {
 	if err != nil {
 		injector.Log.Error(err)
 	}
+	injector.Log.Info("succeed")
 	injector.Server.InitGinEngine()
 }
