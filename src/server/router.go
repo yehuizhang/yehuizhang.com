@@ -28,8 +28,8 @@ func (r *Router) RegisterAPI(app *gin.Engine) {
 	v1 := apiGroup.Group("v1")
 	{
 
-		v1.POST("/register", r.UserAuthController.Signup)
-		v1.POST("/login", r.UserAuthController.SignUp)
+		v1.POST("/register", r.UserAuthController.SignUp)
+		v1.POST("/login", r.UserAuthController.SignIn)
 
 		v1.Use(middlewares.Auth)
 		userGroup := v1.Group("user")
