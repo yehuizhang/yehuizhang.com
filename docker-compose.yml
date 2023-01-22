@@ -6,7 +6,7 @@ services:
     ports:
       - "6379:6379"
 #    restart: always
-    env_file: ./.env
+    env_file: .env
       # save 1 or more writes every 20 seconds to disk in case the server restarts
       # the implicit username is "default".
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
@@ -18,7 +18,7 @@ services:
     ports:
       - "5432:5432"
 #    restart: always
-    env_file: ./.env
+    env_file: .env
     volumes:
       - dbs:/postgresql/data
     environment:
