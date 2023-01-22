@@ -13,10 +13,9 @@ func InitConfig(flagParser *flag_parser.FlagParser, logger *logger.Logger) (*vip
 	config := viper.New()
 	config.SetConfigType("yaml")
 	config.SetConfigName(flagParser.Env)
-	config.AddConfigPath("../../config/")
-	config.AddConfigPath("config/")
+	config.AddConfigPath("../config/")
 	if err := config.ReadInConfig(); err != nil {
-		return config, fmt.Errorf("error on parsing configuration file")
+		return config, fmt.Errorf("error on parsing configuration file. %s", err)
 	}
 	logger.Info("Status: Config initialization succeed")
 
