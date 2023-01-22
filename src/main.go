@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/google/wire"
+	"log"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/server"
 )
@@ -17,8 +18,8 @@ func main() {
 	injector, _, err := BuildInjector()
 
 	if err != nil {
-		injector.Log.Error(err)
+		log.Panic(err)
+	} else {
+		injector.Server.InitGinEngine()
 	}
-	injector.Log.Info("succeed")
-	injector.Server.InitGinEngine()
 }

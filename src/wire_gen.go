@@ -21,12 +21,15 @@ import (
 func BuildInjector() (Injector, func(), error) {
 	healthController := &controllers.HealthController{}
 	sugaredLogger := logger.InitLogger()
-	flagParser := flag_parser.InitFlagParser()
+	flagParser := flag_parser.InitFlagParser(sugaredLogger)
 	viper, err := config.InitConfig(flagParser, sugaredLogger)
 	if err != nil {
 		return Injector{}, nil, err
 	}
-	databaseDatabase := database.InitDatabase(viper, sugaredLogger)
+	databaseDatabase, err := database.InitDatabase(viper, sugaredLogger)
+	if err != nil {
+		return Injector{}, nil, err
+	}
 	infoHandler := &user.InfoHandler{
 		Database: databaseDatabase,
 		Log:      sugaredLogger,

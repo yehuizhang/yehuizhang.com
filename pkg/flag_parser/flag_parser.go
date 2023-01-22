@@ -2,17 +2,16 @@ package flag_parser
 
 import (
 	"flag"
-	"fmt"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
 type FlagParser struct {
 	Env string
 }
 
-func InitFlagParser() *FlagParser {
+func InitFlagParser(log *logger.Logger) *FlagParser {
 	env := flag.String("env", "local", "environment: {local|test|development|production}")
 	flag.Parse()
-	fmt.Printf("Environment: %s\n", *env)
-
+	log.Infof("Environment: %s", *env)
 	return &FlagParser{Env: *env}
 }

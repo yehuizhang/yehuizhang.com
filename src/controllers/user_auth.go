@@ -42,7 +42,7 @@ func (ua *UserAuthController) SignUp(c *gin.Context) {
 	c.JSON(http.StatusOK, userInfo)
 }
 
-func (ua *UserAuthController) Signup(c *gin.Context) {
+func (ua *UserAuthController) SignIn(c *gin.Context) {
 	userInfo, userCredential, err := ua.AuthHandler.Signup(c)
 
 	if err != nil {

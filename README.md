@@ -19,7 +19,7 @@
 ## Development
 - [Development Environment Setup](/docs/dev-setup.md)
 
-Start application
+To start application
 
 ```shell
 cd src
