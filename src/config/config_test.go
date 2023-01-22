@@ -11,7 +11,8 @@ import (
 func Test_InitConfig_OnSuccess(t *testing.T) {
 	observedZapCore, observedLogs := observer.New(zap.InfoLevel)
 	observedLogger := zap.New(observedZapCore).Sugar()
-	config, _ := InitConfig(&flag_parser.FlagParser{Env: "local"}, observedLogger)
+	config, err := InitConfig(&flag_parser.FlagParser{Env: "local"}, observedLogger)
+	assert.Equal(t, nil, err)
 	assert.Equal(t, "localhost:8080", config.GetString("server.port"))
 	assert.Equal(t, zap.InfoLevel, observedLogs.All()[0].Level)
 }

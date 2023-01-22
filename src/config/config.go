@@ -14,6 +14,7 @@ func InitConfig(flagParser *flag_parser.FlagParser, logger *logger.Logger) (*vip
 	config.SetConfigType("yaml")
 	config.SetConfigName(flagParser.Env)
 	config.AddConfigPath("../config/")
+	config.AddConfigPath("../../config/")
 	if err := config.ReadInConfig(); err != nil {
 		logger.Info("Config initialization: FAILED")
 		return config, fmt.Errorf("error on parsing configuration file. %s", err)
