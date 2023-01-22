@@ -16,6 +16,9 @@
   - Add expiration date on invitation code
 - Live weather based on user's location
 
+## Development
+- [Development Environment Setup](/docs/dev-setup.md)
+
 ## Design
 
 - [Password Authentication](https://www.sohamkamani.com/golang/password-authentication-and-storage/)
