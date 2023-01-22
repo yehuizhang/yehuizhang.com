@@ -19,7 +19,6 @@ func main() {
 
 	if err != nil {
 		log.Panic(err)
-	} else {
-		injector.Server.InitGinEngine()
 	}
+	injector.Server.InitGinEngine()
 }
