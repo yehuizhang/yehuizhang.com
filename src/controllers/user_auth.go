@@ -18,7 +18,7 @@ type UserAuthController struct {
 	AuthHandler *user.AuthHandler
 }
 
-func (ua *UserAuthController) SignUp(c *gin.Context) {
+func (ua *UserAuthController) SignIn(c *gin.Context) {
 
 	userCredential, err := ua.AuthHandler.SignIn(c)
 	if err != nil {
@@ -27,6 +27,7 @@ func (ua *UserAuthController) SignUp(c *gin.Context) {
 				"message": "Password does not match.",
 			})
 		} else {
+			ua.Logger.Error(err)
 			c.AbortWithStatus(http.StatusInternalServerError)
 		}
 		return
@@ -42,7 +43,7 @@ func (ua *UserAuthController) SignUp(c *gin.Context) {
 	c.JSON(http.StatusOK, userInfo)
 }
 
-func (ua *UserAuthController) SignIn(c *gin.Context) {
+func (ua *UserAuthController) SignUp(c *gin.Context) {
 	userInfo, userCredential, err := ua.AuthHandler.Signup(c)
 
 	if err != nil {
