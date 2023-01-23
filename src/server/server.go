@@ -11,7 +11,7 @@ import (
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
-var ServerSet = wire.NewSet(wire.Struct(new(Server), "*"), RouterSet)
+var WireSet = wire.NewSet(wire.Struct(new(Server), "*"), RouterSet)
 
 type Server struct {
 	Router   *Router
@@ -21,7 +21,11 @@ type Server struct {
 }
 
 // InitGinEngine Graceful-shutdown : https://github.com/gin-gonic/examples/blob/master/graceful-shutdown/graceful-shutdown/notify-with-context/server.go
-func (s Server) InitGinEngine() *gin.Engine {
+func (s Server) InitGinEngine() (*gin.Engine, error) {
+
+	if err := s.prepareDB(); err != nil {
+		return nil, err
+	}
 
 	app := gin.New()
 	s.Router.RegisterAPI(app)
@@ -40,5 +44,9 @@ func (s Server) InitGinEngine() *gin.Engine {
 	stop()
 	s.Log.Info("shutting down gracefully, press Ctrl+C again to force")
 
-	return app
+	return app, nil
+}
+
+func (s Server) prepareDB() error {
+	return database.AutoMigratePgSchema(s.Database)
 }

@@ -20,7 +20,7 @@ func BuildInjector() (Injector, func(), error) {
 		config.InitConfig,
 		database.InitDatabase,
 		models.ModelsSet,
-		server.ServerSet,
+		server.WireSet,
 		InjectorSet,
 	)
 
