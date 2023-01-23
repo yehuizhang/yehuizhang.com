@@ -21,9 +21,8 @@ func InitConfig(flagParser *flag_parser.FlagParser, logger *logger.Logger) (*vip
 		logger.Info("Config initialization: FAILED")
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			return nil, err
-		} else {
-			return nil, fmt.Errorf("error occurred when initializing config. %s", err)
 		}
+		return nil, fmt.Errorf("error occurred when initializing config. %s", err)
 	}
 
 	logger.Info("Config initialization: OK")
