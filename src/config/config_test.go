@@ -11,15 +11,22 @@ import (
 func Test_InitConfig_OnSuccess(t *testing.T) {
 	observedZapCore, observedLogs := observer.New(zap.InfoLevel)
 	observedLogger := zap.New(observedZapCore).Sugar()
-	config, err := InitConfig(&flag_parser.FlagParser{Env: "local"}, observedLogger)
+	config, err := InitConfig(&flag_parser.FlagParser{Env: "local", ConfigName: ".env", ConfigPath: ".", ConfigType: "env"}, observedLogger)
 	assert.Equal(t, nil, err)
-	assert.Equal(t, "localhost:8080", config.GetString("server.port"))
+	assert.Equal(t, "localhost:8080", config.GetString("GIN_PORT"))
 	assert.Equal(t, zap.InfoLevel, observedLogs.All()[0].Level)
 }
 
-func Test_InitConfig_MissingFail(t *testing.T) {
+func Test_InitConfig_Invalid_File_Name(t *testing.T) {
 	observedZapCore, _ := observer.New(zap.InfoLevel)
 	observedLogger := zap.New(observedZapCore).Sugar()
-	_, err := InitConfig(&flag_parser.FlagParser{Env: "invalid"}, observedLogger)
-	assert.Errorf(t, err, "error on parsing configuration file")
+	_, err := InitConfig(&flag_parser.FlagParser{Env: "", ConfigName: ".invalid", ConfigPath: ".", ConfigType: "env"}, observedLogger)
+	assert.ErrorContains(t, err, "\".invalid\" Not Found")
+}
+
+func Test_InitConfig_Incorrect(t *testing.T) {
+	observedZapCore, _ := observer.New(zap.InfoLevel)
+	observedLogger := zap.New(observedZapCore).Sugar()
+	_, err := InitConfig(&flag_parser.FlagParser{Env: "local", ConfigName: ".env", ConfigPath: ".", ConfigType: "json"}, observedLogger)
+	assert.ErrorContains(t, err, "error occurred when initializing config.")
 }

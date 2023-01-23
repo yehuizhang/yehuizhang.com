@@ -2,6 +2,13 @@ NAME    = zyh-webserver
 VERSION = 0.0.1
 BUILD   = ./build
 
+.PHONY: docker
+docker:
+	@docker-compose -p "zyh-gin-webapp" up --build --detach
+
+.PHONY: docker-down
+docker-down:
+	@docker-compose -p "zyh-gin-webapp" down
 ## build: Compile the packages.
 .PHONY: build
 build:

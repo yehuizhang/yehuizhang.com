@@ -11,14 +11,21 @@ import (
 func InitConfig(flagParser *flag_parser.FlagParser, logger *logger.Logger) (*viper.Viper, error) {
 
 	config := viper.New()
-	config.SetConfigType("yaml")
-	config.SetConfigName(flagParser.Env)
-	config.AddConfigPath("../config/")
-	config.AddConfigPath("../../config/")
+	config.SetConfigType(flagParser.ConfigType)
+	config.SetConfigName(flagParser.ConfigName)
+	config.AddConfigPath(flagParser.ConfigPath)
+	config.AddConfigPath(".")
+	config.AddConfigPath("../")
+	config.AddConfigPath("../../")
 	if err := config.ReadInConfig(); err != nil {
 		logger.Info("Config initialization: FAILED")
-		return config, fmt.Errorf("error on parsing configuration file. %s", err)
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			return nil, err
+		} else {
+			return nil, fmt.Errorf("error occurred when initializing config. %s", err)
+		}
 	}
+
 	logger.Info("Config initialization: OK")
 
 	return config, nil
