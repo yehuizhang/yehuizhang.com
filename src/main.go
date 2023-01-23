@@ -17,6 +17,9 @@ var InjectorSet = wire.NewSet(wire.Struct(new(Injector), "*"))
 func main() {
 	injector, _, err := BuildInjector()
 
+	//userAccountQuery := user_account.UserAccountQuery{DB: injector.Server.Database}
+	//userAccountQuery.Create()
+
 	if err != nil {
 		log.Panic(err)
 	}

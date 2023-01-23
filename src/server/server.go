@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
+	"yehuizhang.com/go-webapp-gin/src/tasks"
 )
 
 var WireSet = wire.NewSet(wire.Struct(new(Server), "*"), RouterSet)
@@ -48,5 +49,5 @@ func (s Server) InitGinEngine() (*gin.Engine, error) {
 }
 
 func (s Server) prepareDB() error {
-	return database.AutoMigratePgSchema(s.Database)
+	return tasks.AutoMigratePgSchema(s.Database)
 }
