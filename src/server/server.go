@@ -30,7 +30,7 @@ func (s Server) InitGinEngine() *gin.Engine {
 	defer s.Database.Redis.Close()
 
 	go func() {
-		app.Run(s.Config.GetString("server.port"))
+		app.Run(s.Config.GetString("GIN_PORT"))
 	}()
 
 	// Listen for the interrupt signal
