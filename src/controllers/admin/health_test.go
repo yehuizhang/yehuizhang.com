@@ -1,4 +1,4 @@
-package controllers
+package admin
 
 import (
 	"github.com/gin-gonic/gin"
@@ -17,9 +17,9 @@ func setupRouter() *gin.Engine {
 func TestHealthController_Status(t *testing.T) {
 
 	router := setupRouter()
-	health := new(HealthController)
+	health := new(Controller)
 
-	router.GET("/health", health.Get)
+	router.GET("/health", health.GetHealth)
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/health", nil)
 	router.ServeHTTP(w, req)

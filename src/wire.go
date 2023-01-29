@@ -9,7 +9,7 @@ import (
 	"yehuizhang.com/go-webapp-gin/pkg/flag_parser"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/config"
-	"yehuizhang.com/go-webapp-gin/src/models"
+	"yehuizhang.com/go-webapp-gin/src/dao"
 	"yehuizhang.com/go-webapp-gin/src/server"
 )
 
@@ -19,7 +19,7 @@ func BuildInjector() (Injector, func(), error) {
 		flag_parser.InitFlagParser,
 		config.InitConfig,
 		database.InitDatabase,
-		models.ModelsSet,
+		dao.QuerySet,
 		server.WireSet,
 		InjectorSet,
 	)

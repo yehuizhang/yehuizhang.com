@@ -5,16 +5,17 @@ import (
 	"github.com/google/wire"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
 	"yehuizhang.com/go-webapp-gin/src/controllers"
+	"yehuizhang.com/go-webapp-gin/src/controllers/admin"
+	"yehuizhang.com/go-webapp-gin/src/controllers/user"
 	"yehuizhang.com/go-webapp-gin/src/middlewares"
 )
 
 var RouterSet = wire.NewSet(wire.Struct(new(Router), "*"), controllers.ControllerSet)
 
 type Router struct {
-	HealthController   *controllers.HealthController
-	UserAuthController *controllers.UserAuthController
-	UserInfoController *controllers.UserInfoController
-	Database           *database.Database
+	AdminController *admin.Controller
+	UserController  *user.Controller
+	Database        *database.Database
 }
 
 func (r *Router) RegisterAPI(app *gin.Engine) {
@@ -24,18 +25,16 @@ func (r *Router) RegisterAPI(app *gin.Engine) {
 	apiGroup.Use(gin.Recovery())
 	apiGroup.Use(middlewares.Session(r.Database))
 
-	apiGroup.GET("/health", r.HealthController.Get)
+	apiGroup.GET("/health", r.AdminController.GetHealth)
 	v1 := apiGroup.Group("v1")
 	{
-
-		v1.POST("/register", r.UserAuthController.SignUp)
-		v1.POST("/login", r.UserAuthController.SignIn)
-
+		v1.POST("/register", r.UserController.SignUp)
+		v1.POST("/login", r.UserController.SignIn)
 		v1.Use(middlewares.Auth)
 		userGroup := v1.Group("user")
 		{
-			userGroup.GET("/info", r.UserInfoController.Get)
-			userGroup.PUT("/info", r.UserInfoController.CreateOrUpdate)
+			userGroup.GET("/info", r.UserController.Get)
+			userGroup.POST("/info", r.UserController.Create)
 		}
 	}
 }

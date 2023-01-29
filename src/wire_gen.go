@@ -11,15 +11,17 @@ import (
 	"yehuizhang.com/go-webapp-gin/pkg/flag_parser"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/config"
-	"yehuizhang.com/go-webapp-gin/src/controllers"
-	"yehuizhang.com/go-webapp-gin/src/models/user"
+	"yehuizhang.com/go-webapp-gin/src/controllers/admin"
+	"yehuizhang.com/go-webapp-gin/src/controllers/user"
+	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
+	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 	"yehuizhang.com/go-webapp-gin/src/server"
 )
 
 // Injectors from wire.go:
 
 func BuildInjector() (Injector, func(), error) {
-	healthController := &controllers.HealthController{}
+	controller := &admin.Controller{}
 	sugaredLogger := logger.InitLogger()
 	flagParser := flag_parser.InitFlagParser(sugaredLogger)
 	viper, err := config.InitConfig(flagParser, sugaredLogger)
@@ -30,28 +32,24 @@ func BuildInjector() (Injector, func(), error) {
 	if err != nil {
 		return Injector{}, nil, err
 	}
-	infoHandler := &user.InfoHandler{
-		Database: databaseDatabase,
-		Log:      sugaredLogger,
+	userAccountQuery := &account.UserAccountQuery{
+		Db:  databaseDatabase,
+		Log: sugaredLogger,
 	}
-	authHandler := &user.AuthHandler{
-		Database: databaseDatabase,
-		Log:      sugaredLogger,
+	userInfoQuery := &info.UserInfoQuery{
+		Db:  databaseDatabase,
+		Log: sugaredLogger,
 	}
-	userAuthController := &controllers.UserAuthController{
-		Logger:      sugaredLogger,
-		InfoHandler: infoHandler,
-		AuthHandler: authHandler,
-	}
-	userInfoController := &controllers.UserInfoController{
-		Logger:      sugaredLogger,
-		InfoHandler: infoHandler,
+	userController := &user.Controller{
+		Log:          sugaredLogger,
+		Db:           databaseDatabase,
+		AccountQuery: userAccountQuery,
+		InfoQuery:    userInfoQuery,
 	}
 	router := &server.Router{
-		HealthController:   healthController,
-		UserAuthController: userAuthController,
-		UserInfoController: userInfoController,
-		Database:           databaseDatabase,
+		AdminController: controller,
+		UserController:  userController,
+		Database:        databaseDatabase,
 	}
 	serverServer := &server.Server{
 		Router:   router,
