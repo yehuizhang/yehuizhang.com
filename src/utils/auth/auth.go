@@ -2,10 +2,10 @@ package auth
 
 import (
 	"log"
+	"yehuizhang.com/go-webapp-gin/src/controllers/user"
 
 	"github.com/gin-gonic/gin"
 	"yehuizhang.com/go-webapp-gin/pkg/ginsession"
-	"yehuizhang.com/go-webapp-gin/src/models/user"
 )
 
 func AddUidToSessionStore(c *gin.Context, uid string) {

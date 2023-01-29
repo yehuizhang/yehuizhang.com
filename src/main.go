@@ -4,7 +4,6 @@ import (
 	"github.com/google/wire"
 	"log"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
 	"yehuizhang.com/go-webapp-gin/src/server"
 )
 
@@ -21,9 +20,6 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-
-	userAccountQuery := account.UserAccountQuery{DB: injector.Server.Database, Log: injector.Log}
-	userAccountQuery.Create()
 
 	injector.Server.InitGinEngine()
 }

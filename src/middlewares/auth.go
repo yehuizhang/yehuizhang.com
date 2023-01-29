@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"yehuizhang.com/go-webapp-gin/pkg/ginsession"
-	"yehuizhang.com/go-webapp-gin/src/models/user"
+	"yehuizhang.com/go-webapp-gin/src/controllers/user"
 )
 
 // validate user's identify and set into context
