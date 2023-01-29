@@ -1,4 +1,4 @@
-package user_account
+package account
 
 import (
 	"yehuizhang.com/go-webapp-gin/src/dao/shared"
