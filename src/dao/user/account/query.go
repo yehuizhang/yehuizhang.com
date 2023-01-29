@@ -17,7 +17,7 @@ type UserAccountQuery struct {
 	Log *logger.Logger
 }
 
-func (u UserAccountQuery) Create(input *Form) (string, int) {
+func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {
 
 	encryptedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 4)
 	if err != nil {
