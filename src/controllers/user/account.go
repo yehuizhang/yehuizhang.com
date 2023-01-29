@@ -5,15 +5,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"yehuizhang.com/go-webapp-gin/pkg/ginsession"
 	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
-	"yehuizhang.com/go-webapp-gin/src/utils/auth"
 )
 
 func (ctl *Controller) SignIn(c *gin.Context) {
 
-	input, err := readCredentialFromContext(c)
+	input := account.SignInForm{}
+	err := c.Bind(&input)
+
 	if err != nil {
-		ctl.Log.Error(err)
+		ctl.Log.Errorw("unable to read account info from body", "err", err)
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
@@ -30,7 +32,7 @@ func (ctl *Controller) SignIn(c *gin.Context) {
 		return
 	}
 
-	auth.AddUidToSessionStore(c, record.Uuid.String())
+	addUidToSessionStore(c, record.Uuid.String())
 	c.String(http.StatusOK, "successfully logged in")
 }
 
@@ -47,16 +49,22 @@ func (ctl *Controller) SignUp(c *gin.Context) {
 		c.AbortWithStatus(errCode)
 	}
 
-	auth.AddUidToSessionStore(c, id)
+	addUidToSessionStore(c, id)
 	c.String(http.StatusCreated, "")
 }
 
-func readCredentialFromContext(c *gin.Context) (*account.Form, error) {
-	form := account.Form{}
+func readCredentialFromContext(c *gin.Context) (*account.SignUpForm, error) {
+	form := account.SignUpForm{}
 	err := c.Bind(&form)
 
 	if err != nil {
 		return nil, fmt.Errorf("unable to read account info from body: %s", err)
 	}
 	return &form, nil
+}
+
+func addUidToSessionStore(c *gin.Context, uid string) {
+	store := ginsession.FromContext(c)
+	store.Set(UID, uid)
+	store.Save()
 }

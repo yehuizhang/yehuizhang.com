@@ -12,9 +12,14 @@ type UserAccount struct {
 	Active   bool   `gorm:"not null"`
 }
 
-type Form struct {
+type SignUpForm struct {
 	// This should be improved by using custom validator
 	Username string `json:"username" binding:"required,alphanum,lowercase,min=3,max=15"`
 	Password string `json:"password" binding:"required,min=6,max=64"`
-	Email    string `json:"email" binding:"email"`
+	Email    string `json:"email" binding:"required,email"`
+}
+
+type SignInForm struct {
+	Username string `json:"username" binding:"required,alphanum,lowercase,min=3,max=15"`
+	Password string `json:"password" binding:"required,min=6,max=64"`
 }
