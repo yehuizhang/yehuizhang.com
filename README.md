@@ -52,6 +52,7 @@ go run main.go wire_gen.go
 - Library
   - [validator](https://github.com/go-playground/validator)
     - [Doc](https://pkg.go.dev/github.com/go-playground/validator/v10)
+    - [Gin binding in Go: A tutorial with examples](https://blog.logrocket.com/gin-binding-in-go-a-tutorial-with-examples/)
   - Logger
     - [Zap](https://github.com/uber-go/zap)
   - Dependency Injection

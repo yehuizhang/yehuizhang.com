@@ -14,7 +14,7 @@ type Controller struct {
 	Log          *logger.Logger
 	Db           *database.Database
 	AccountQuery *account.UserAccountQuery
-	InfoQuery    *info.UserInfoQuery
+	InfoQuery    info.IUserInfoQuery
 }
 
 const (

@@ -36,15 +36,12 @@ func BuildInjector() (Injector, func(), error) {
 		Db:  databaseDatabase,
 		Log: sugaredLogger,
 	}
-	userInfoQuery := &info.UserInfoQuery{
-		Db:  databaseDatabase,
-		Log: sugaredLogger,
-	}
+	iUserInfoQuery := info.InitUserInfoQuery(databaseDatabase, sugaredLogger)
 	userController := &user.Controller{
 		Log:          sugaredLogger,
 		Db:           databaseDatabase,
 		AccountQuery: userAccountQuery,
-		InfoQuery:    userInfoQuery,
+		InfoQuery:    iUserInfoQuery,
 	}
 	router := &server.Router{
 		AdminController: controller,

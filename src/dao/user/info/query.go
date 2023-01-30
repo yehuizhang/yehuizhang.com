@@ -2,18 +2,28 @@ package info
 
 import (
 	"errors"
-	"github.com/google/wire"
 	"gorm.io/gorm"
 	"net/http"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
-var WireSet = wire.NewSet(wire.Struct(new(UserInfoQuery), "*"))
+type IUserInfoQuery interface {
+	Create(userInfo *UserInfo) int
+	Get(id string) (*UserInfo, int)
+}
 
 type UserInfoQuery struct {
 	Db  *database.Database
 	Log *logger.Logger
+}
+
+func InitUserInfoQuery(db *database.Database, log *logger.Logger) IUserInfoQuery {
+	query := UserInfoQuery{
+		Db:  db,
+		Log: log,
+	}
+	return query
 }
 
 func (u UserInfoQuery) Create(userInfo *UserInfo) int {
