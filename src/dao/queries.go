@@ -8,4 +8,4 @@ import (
 
 var QuerySet = wire.NewSet(
 	account.WireSet,
-	info.WireSet)
+	info.InitUserInfoQuery)
