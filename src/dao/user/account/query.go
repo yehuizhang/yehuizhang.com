@@ -35,9 +35,8 @@ func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {
 	if tx.Error != nil {
 		u.Log.Errorf("failed to store user account in DB. %s", tx.Error)
 		return "", http.StatusInternalServerError
-	} else {
-		u.Log.Debugf("user %s is created", userAccount.Uuid.String())
 	}
+	u.Log.Debugf("user %s is created", userAccount.Uuid.String())
 	return userAccount.Uuid.String(), 0
 }
 
