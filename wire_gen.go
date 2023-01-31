@@ -8,7 +8,7 @@ package main
 
 import (
 	"yehuizhang.com/go-webapp-gin/pkg/database"
-	"yehuizhang.com/go-webapp-gin/pkg/flag_parser"
+	"yehuizhang.com/go-webapp-gin/pkg/flags"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/config"
 	"yehuizhang.com/go-webapp-gin/src/controllers/admin"
@@ -22,8 +22,8 @@ import (
 
 func BuildInjector() (Injector, func(), error) {
 	controller := &admin.Controller{}
-	sugaredLogger := logger.InitLogger()
-	flagParser := flag_parser.InitFlagParser(sugaredLogger)
+	flagParser := flags.InitFlagParser()
+	sugaredLogger := logger.InitLogger(flagParser)
 	viper, err := config.InitConfig(flagParser, sugaredLogger)
 	if err != nil {
 		return Injector{}, nil, err
