@@ -13,7 +13,7 @@ var WireSet = wire.NewSet(wire.Struct(new(Controller), "*"))
 type Controller struct {
 	Log          *logger.Logger
 	Db           *database.Database
-	AccountQuery *account.UserAccountQuery
+	AccountQuery account.IUserAccountQuery
 	InfoQuery    info.IUserInfoQuery
 }
 
