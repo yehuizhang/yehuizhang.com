@@ -6,7 +6,7 @@ package main
 import (
 	"github.com/google/wire"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
-	"yehuizhang.com/go-webapp-gin/pkg/flag_parser"
+	"yehuizhang.com/go-webapp-gin/pkg/flags"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/config"
 	"yehuizhang.com/go-webapp-gin/src/dao"
@@ -15,8 +15,8 @@ import (
 
 func BuildInjector() (Injector, func(), error) {
 	wire.Build(
+		flags.InitFlagParser,
 		logger.InitLogger,
-		flag_parser.InitFlagParser,
 		config.InitConfig,
 		database.InitDatabase,
 		dao.QuerySet,

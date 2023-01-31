@@ -2,13 +2,13 @@ package config
 
 import (
 	"fmt"
-	"yehuizhang.com/go-webapp-gin/pkg/flag_parser"
+	"yehuizhang.com/go-webapp-gin/pkg/flags"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 
 	"github.com/spf13/viper"
 )
 
-func InitConfig(flagParser *flag_parser.FlagParser, logger *logger.Logger) (*viper.Viper, error) {
+func InitConfig(flagParser *flags.FlagParser, logger *logger.Logger) (*viper.Viper, error) {
 
 	config := viper.New()
 	config.SetConfigType(flagParser.ConfigType)
