@@ -7,5 +7,5 @@ import (
 )
 
 var QuerySet = wire.NewSet(
-	account.WireSet,
+	account.InitUserAccountQuery,
 	info.InitUserInfoQuery)

@@ -2,7 +2,6 @@ package account
 
 import (
 	"errors"
-	"github.com/google/wire"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"net/http"
@@ -10,11 +9,18 @@ import (
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
-var WireSet = wire.NewSet(wire.Struct(new(UserAccountQuery), "*"))
+type IUserAccountQuery interface {
+	Create(input *SignUpForm) (string, int)
+	GetByUsername(username string) (*UserAccount, int)
+}
 
 type UserAccountQuery struct {
 	Db  *database.Database
 	Log *logger.Logger
+}
+
+func InitUserAccountQuery(db *database.Database, log *logger.Logger) IUserAccountQuery {
+	return UserAccountQuery{Db: db, Log: log}
 }
 
 func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {

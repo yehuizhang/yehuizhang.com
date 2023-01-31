@@ -19,11 +19,10 @@ type UserInfoQuery struct {
 }
 
 func InitUserInfoQuery(db *database.Database, log *logger.Logger) IUserInfoQuery {
-	query := UserInfoQuery{
+	return UserInfoQuery{
 		Db:  db,
 		Log: log,
 	}
-	return query
 }
 
 func (u UserInfoQuery) Create(userInfo *UserInfo) int {
