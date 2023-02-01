@@ -33,8 +33,8 @@ func (r *Router) RegisterAPI(app *gin.Engine) {
 		v1.Use(middlewares.Auth)
 		userGroup := v1.Group("user")
 		{
-			userGroup.GET("/info", r.UserController.Get)
-			userGroup.POST("/info", r.UserController.Create)
+			userGroup.GET("/info", r.UserController.GetInfo)
+			userGroup.POST("/info", r.UserController.CreateInfo)
 		}
 	}
 }

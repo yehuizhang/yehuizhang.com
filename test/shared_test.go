@@ -3,6 +3,7 @@ package test
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -29,4 +30,11 @@ func generateRequest(method string, target string, jsonBody interface{}) *http.R
 	request := httptest.NewRequest(method, target, toReader(jsonBody))
 	request.Header.Set("Content-Type", "application/json")
 	return request
+}
+
+func createGinContext() (*gin.Context, *httptest.ResponseRecorder) {
+	w := httptest.NewRecorder()
+	gin.SetMode(gin.TestMode)
+	c, _ := gin.CreateTestContext(w)
+	return c, w
 }

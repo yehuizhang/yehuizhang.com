@@ -25,5 +25,5 @@ Tools to access DB:
 ### [Mockery](https://github.com/vektra/mockery)
 To generate mocks based on the interface, update `--dir=` section and run the command below
 ```shell
-mockery --dir=src/dao/user/account --all --output=./test --outpkg=test
+mockery --dir=src/dao/user --all --output=./test --outpkg=test
 ```
