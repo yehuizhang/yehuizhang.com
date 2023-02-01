@@ -8,7 +8,7 @@ import (
 	"yehuizhang.com/go-webapp-gin/src/controllers/user"
 )
 
-// validate user's identify and set into context
+// Auth validate user's identify and set into context
 func Auth(c *gin.Context) {
 
 	store := ginsession.FromContext(c)
