@@ -21,12 +21,11 @@ func (ctl *Controller) Get(c *gin.Context) {
 
 func (ctl *Controller) Create(c *gin.Context) {
 	uid := c.GetString(UID)
-
 	input := info.Form{}
 	err := c.Bind(&input)
 
 	if err != nil {
-		ctl.Log.Errorw("Unable to read UserInfo from body: ", "error:", err)
+		ctl.Log.Error("Unable to read UserInfo from body.", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -35,7 +34,9 @@ func (ctl *Controller) Create(c *gin.Context) {
 	if input.Birthday != "" {
 		birthday, err = time.Parse("2006-01-02", input.Birthday)
 		if err != nil {
-			ctl.Log.Errorw("Unable to read UserInfo from body: ", "error:", err)
+			ctl.Log.Error("Unable to parse birthday from input", err)
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
 		}
 	}
 
