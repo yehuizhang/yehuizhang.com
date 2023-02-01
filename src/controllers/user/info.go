@@ -7,7 +7,7 @@ import (
 	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 )
 
-func (ctl *Controller) Get(c *gin.Context) {
+func (ctl *Controller) GetInfo(c *gin.Context) {
 	uid := c.GetString(UID)
 
 	userInfo, errorCode := ctl.InfoQuery.Get(uid)
@@ -19,7 +19,7 @@ func (ctl *Controller) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, userInfo)
 }
 
-func (ctl *Controller) Create(c *gin.Context) {
+func (ctl *Controller) CreateInfo(c *gin.Context) {
 	uid := c.GetString(UID)
 	input := info.Form{}
 	err := c.Bind(&input)
