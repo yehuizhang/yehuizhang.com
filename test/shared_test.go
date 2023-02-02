@@ -8,14 +8,17 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"yehuizhang.com/go-webapp-gin/pkg/flags"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 )
 
-var flagParser = &flags.FlagParser{
+var fg = &flags.FlagParser{
 	Env:        "test",
 	ConfigPath: "",
 	ConfigName: "",
 	ConfigType: "",
 }
+
+var lg = logger.InitLogger(fg)
 
 func toReader(v interface{}) io.Reader {
 	var buf bytes.Buffer
