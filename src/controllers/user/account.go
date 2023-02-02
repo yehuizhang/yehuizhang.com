@@ -49,7 +49,9 @@ func (ctl *Controller) SignUp(c *gin.Context) {
 		c.AbortWithStatus(errCode)
 	}
 
-	addUidToSessionStore(c, id)
+	if err := addUidToSessionStore(c, id); err != nil {
+		ctl.Log.Error(err)
+	}
 	c.String(http.StatusCreated, "")
 }
 
@@ -63,8 +65,12 @@ func readCredentialFromContext(c *gin.Context) (*account.SignUpForm, error) {
 	return &form, nil
 }
 
-func addUidToSessionStore(c *gin.Context, uid string) {
-	store := ginsession.FromContext(c)
-	store.Set(UID, uid)
-	store.Save()
+func addUidToSessionStore(c *gin.Context, uid string) error {
+	if store := ginsession.FromContext(c); store == nil {
+		return fmt.Errorf("failed to get session store from context")
+	} else {
+		store.Set(UID, uid)
+		store.Save()
+	}
+	return nil
 }

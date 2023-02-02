@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"testing"
 	"time"
-	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/controllers/user"
 	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 )
@@ -47,7 +46,7 @@ func TestController_CreateInfo_Invalid_Input(t *testing.T) {
 	c.Set(user.UID, "test")
 
 	mockedInfoQuery := IUserInfoQuery{}
-	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: logger.InitLogger(flagParser)}
+	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: lg}
 	v.CreateInfo(c)
 
 	assert.Equal(t, 500, c.Writer.Status())
@@ -67,7 +66,7 @@ func TestController_CreateInfo_Invalid_Birthday(t *testing.T) {
 	c.Set(user.UID, "test")
 
 	mockedInfoQuery := IUserInfoQuery{}
-	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: logger.InitLogger(flagParser)}
+	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: lg}
 	v.CreateInfo(c)
 
 	assert.Equal(t, 500, c.Writer.Status())

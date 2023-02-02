@@ -12,7 +12,7 @@ docker-down:
 ## build: Compile the packages.
 .PHONY: build
 build:
-	@go build -o $(BUILD)/$(NAME) ./src
+	@go build -o $(BUILD)/$(NAME) .
 
 ## run: Build and Run in development mode.
 .PHONY: run
