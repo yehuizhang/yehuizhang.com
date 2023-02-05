@@ -90,6 +90,20 @@ func FromContext(ctx *gin.Context) session.Store {
 	return nil
 }
 
+func AddValueToStore(ctx *gin.Context, key string, value interface{}) error {
+	store := FromContext(ctx)
+	if store == nil {
+		return fmt.Errorf("failed to get session store from context")
+	}
+	store.Set(key, value)
+	err := store.Save()
+
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Destroy a session
 func Destroy(ctx *gin.Context) error {
 	v, ok := ctx.Get(manageKey)
