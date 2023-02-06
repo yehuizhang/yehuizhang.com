@@ -3,10 +3,11 @@ package tasks
 import (
 	"yehuizhang.com/go-webapp-gin/pkg/database"
 	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
+	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 )
 
-func AutoMigratePgSchema(db *database.Database) error {
+func AutoMigratePgSchema(pg database.IPostgres) error {
 
-	err := db.Pg.AutoMigrate(&account.UserAccount{})
+	err := pg.Client().AutoMigrate(&account.UserAccount{}, &info.UserInfo{})
 	return err
 }

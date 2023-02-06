@@ -5,7 +5,7 @@ import (
 )
 
 type UserInfo struct {
-	Uuid      string `gorm:"primarykey;type:uuid"`
+	Id        string `gorm:"primarykey;type:uuid"`
 	Name      string
 	Birthday  time.Time
 	Gender    string `gorm:"size:1"`
@@ -15,8 +15,8 @@ type UserInfo struct {
 }
 
 type Form struct {
-	Name     string `json:"name"`
-	Birthday string `json:"birthday,omitempty"`
-	Gender   string `json:"gender,omitempty"`
-	PhotoURL string `json:"photo_url,omitempty"`
+	Name     string    `json:"name"`
+	Birthday time.Time `json:"birthday"`
+	Gender   string    `json:"gender"`
+	PhotoURL string    `json:"photo_url"`
 }

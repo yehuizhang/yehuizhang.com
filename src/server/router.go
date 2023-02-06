@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
+	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/controllers"
 	"yehuizhang.com/go-webapp-gin/src/controllers/admin"
 	"yehuizhang.com/go-webapp-gin/src/controllers/user"
@@ -15,15 +16,17 @@ var RouterSet = wire.NewSet(wire.Struct(new(Router), "*"), controllers.Controlle
 type Router struct {
 	AdminController *admin.Controller
 	UserController  *user.Controller
-	Database        *database.Database
+	Redis           database.IRedis
+	Log             *logger.Logger
 }
 
 func (r *Router) RegisterAPI(app *gin.Engine) {
 	apiGroup := app.Group("/api")
 
+	//apiGroup.Use(middlewares.ErrorHandler(r.Log))
 	apiGroup.Use(gin.Logger())
 	apiGroup.Use(gin.Recovery())
-	apiGroup.Use(middlewares.Session(r.Database))
+	apiGroup.Use(middlewares.Session(r.Redis))
 
 	apiGroup.GET("/health", r.AdminController.GetHealth)
 	v1 := apiGroup.Group("v1")
@@ -35,6 +38,7 @@ func (r *Router) RegisterAPI(app *gin.Engine) {
 		{
 			userGroup.GET("/info", r.UserController.GetInfo)
 			userGroup.POST("/info", r.UserController.CreateInfo)
+			userGroup.PUT("/info", r.UserController.UpdateInfo)
 		}
 	}
 }

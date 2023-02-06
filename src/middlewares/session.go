@@ -11,7 +11,7 @@ import (
 )
 
 // Session Cookie expires in 7 days. Session is removed from DB in 2 hours, so it has to be refreshed to keep user live
-func Session(database *database.Database) gin.HandlerFunc {
+func Session(rd database.IRedis) gin.HandlerFunc {
 	sessionConfig := ginsession.Config{
 		ErrorHandleFunc: func(c *gin.Context, err error) {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -31,7 +31,7 @@ func Session(database *database.Database) gin.HandlerFunc {
 	sessionLifeTime := int64(3600 * 2)
 
 	return ginsession.NewWithConfig(
-		sessionConfig, session.SetStore(redis.NewRedisStoreWithCli(database.Redis, "user:session:")),
+		sessionConfig, session.SetStore(redis.NewRedisStoreWithCli(rd.Client(), "user:session:")),
 		session.SetSecure(false), session.SetSameSite(http.SameSiteLaxMode),
 		session.SetCookieName("sid"), session.SetCookieLifeTime(cookieLifeTime),
 		session.SetExpired(sessionLifeTime))

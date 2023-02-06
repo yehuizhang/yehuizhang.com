@@ -3,7 +3,6 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"time"
 	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 )
 
@@ -22,28 +21,16 @@ func (ctl *Controller) GetInfo(c *gin.Context) {
 func (ctl *Controller) CreateInfo(c *gin.Context) {
 	uid := c.GetString(UID)
 	input := info.Form{}
-	err := c.Bind(&input)
-
-	if err != nil {
-		ctl.Log.Error("Unable to read UserInfo from body.", err)
-		c.AbortWithStatus(http.StatusInternalServerError)
+	if err := c.ShouldBind(&input); err != nil {
+		ctl.Log.Error(err)
+		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	var birthday time.Time
-	if input.Birthday != "" {
-		birthday, err = time.Parse("2006-01-02", input.Birthday)
-		if err != nil {
-			ctl.Log.Error("Unable to parse birthday from input", err)
-			c.AbortWithStatus(http.StatusInternalServerError)
-			return
-		}
-	}
-
 	userInfo := info.UserInfo{
-		Uuid:     uid,
+		Id:       uid,
 		Name:     input.Name,
-		Birthday: birthday,
+		Birthday: input.Birthday,
 		Gender:   input.Gender,
 		PhotoURL: input.PhotoURL,
 	}
@@ -52,6 +39,35 @@ func (ctl *Controller) CreateInfo(c *gin.Context) {
 		c.AbortWithStatus(errorCode)
 		return
 	}
+	c.JSON(http.StatusOK, userInfo)
+}
 
+func (ctl *Controller) UpdateInfo(c *gin.Context) {
+	uid := c.GetString(UID)
+
+	input := info.Form{}
+	if err := c.ShouldBind(&input); err != nil {
+		ctl.Log.Error(err)
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	userInfo, errorCode := ctl.InfoQuery.Get(uid)
+
+	if errorCode != 0 {
+		ctl.Log.Errorf("unable to get userInfo from db for user %s", uid)
+		c.AbortWithStatus(errorCode)
+		return
+	}
+
+	userInfo.Name = input.Name
+	userInfo.Birthday = input.Birthday
+	userInfo.Gender = input.Gender
+	userInfo.PhotoURL = input.PhotoURL
+
+	if errorCode := ctl.InfoQuery.Update(userInfo); errorCode != 0 {
+		c.AbortWithStatus(errorCode)
+		return
+	}
 	c.JSON(http.StatusOK, userInfo)
 }
