@@ -27,3 +27,14 @@ To generate mocks based on the interface, update `--dir=` section and run the co
 ```shell
 mockery --all --output=./test --outpkg=test --dir=src/dao/user
 ```
+
+## Swagger
+
+```shell
+# Generate/Update swagger doc
+swag init
+```
+```shell
+# Format comments
+swag fmt
+```
