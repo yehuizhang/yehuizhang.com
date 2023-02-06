@@ -49,6 +49,20 @@ func (_m *IUserInfoQuery) Get(id string) (*info.UserInfo, int) {
 	return r0, r1
 }
 
+// Update provides a mock function with given fields: userInfo
+func (_m *IUserInfoQuery) Update(userInfo *info.UserInfo) int {
+	ret := _m.Called(userInfo)
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func(*info.UserInfo) int); ok {
+		r0 = rf(userInfo)
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewIUserInfoQuery interface {
 	mock.TestingT
 	Cleanup(func())

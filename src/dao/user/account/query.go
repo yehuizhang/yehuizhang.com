@@ -15,12 +15,12 @@ type IUserAccountQuery interface {
 }
 
 type UserAccountQuery struct {
-	Db  *database.Database
+	Pg  database.IPostgres
 	Log *logger.Logger
 }
 
-func InitUserAccountQuery(db *database.Database, log *logger.Logger) IUserAccountQuery {
-	return UserAccountQuery{Db: db, Log: log}
+func InitUserAccountQuery(pg database.IPostgres, log *logger.Logger) IUserAccountQuery {
+	return UserAccountQuery{Pg: pg, Log: log}
 }
 
 func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {
@@ -36,20 +36,20 @@ func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {
 		Email:    input.Email,
 		Active:   true,
 	}
-	tx := u.Db.Pg.Create(&userAccount)
+	tx := u.Pg.Client().Create(&userAccount)
 
 	if tx.Error != nil {
 		u.Log.Errorf("failed to store user account in DB. %s", tx.Error)
 		return "", http.StatusInternalServerError
 	}
-	u.Log.Debugf("user %s is created", userAccount.Uuid.String())
-	return userAccount.Uuid.String(), 0
+	u.Log.Debugf("user %s is created", userAccount.Id.String())
+	return userAccount.Id.String(), 0
 }
 
 func (u UserAccountQuery) GetByUsername(username string) (*UserAccount, int) {
 	var record UserAccount
 
-	tx := u.Db.Pg.Where("username = ?", username).First(&record)
+	tx := u.Pg.Client().Where("username = ?", username).First(&record)
 
 	if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		u.Log.Errorf("user %s was not found", username)

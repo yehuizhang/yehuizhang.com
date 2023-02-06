@@ -15,10 +15,11 @@ import (
 var WireSet = wire.NewSet(wire.Struct(new(Server), "*"), RouterSet)
 
 type Server struct {
-	Router   *Router
-	Config   *viper.Viper
-	Database *database.Database
-	Log      *logger.Logger
+	Router *Router
+	Config *viper.Viper
+	Redis  database.IRedis
+	Pg     database.IPostgres
+	Log    *logger.Logger
 }
 
 // InitGinEngine Graceful-shutdown : https://github.com/gin-gonic/examples/blob/master/graceful-shutdown/graceful-shutdown/notify-with-context/server.go
@@ -32,7 +33,7 @@ func (s Server) InitGinEngine() (*gin.Engine, error) {
 	s.Router.RegisterAPI(app)
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
-	defer s.Database.Redis.Close()
+	defer s.Redis.Client().Close()
 
 	go func() {
 		app.Run(s.Config.GetString("GIN_PORT"))
@@ -41,7 +42,7 @@ func (s Server) InitGinEngine() (*gin.Engine, error) {
 	// Listen for the interrupt signal
 	<-ctx.Done()
 
-	s.Database.Redis.Close()
+	s.Redis.Client().Close()
 	stop()
 	s.Log.Info("shutting down gracefully, press Ctrl+C again to force")
 
@@ -49,5 +50,5 @@ func (s Server) InitGinEngine() (*gin.Engine, error) {
 }
 
 func (s Server) prepareDB() error {
-	return tasks.AutoMigratePgSchema(s.Database)
+	return tasks.AutoMigratePgSchema(s.Pg)
 }

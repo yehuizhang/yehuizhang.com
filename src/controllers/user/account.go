@@ -32,7 +32,7 @@ func (ctl *Controller) SignIn(c *gin.Context) {
 		return
 	}
 
-	if err := ginsession.AddValueToStore(c, UID, record.Uuid.String()); err != nil {
+	if err := ginsession.AddValueToStore(c, UID, record.Id.String()); err != nil {
 		ctl.Log.Error(err)
 	}
 	c.String(http.StatusOK, "successfully logged in")

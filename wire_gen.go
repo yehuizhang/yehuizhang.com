@@ -28,28 +28,33 @@ func BuildInjector() (Injector, func(), error) {
 	if err != nil {
 		return Injector{}, nil, err
 	}
-	databaseDatabase, err := database.InitDatabase(viper, sugaredLogger)
+	iPostgres, err := database.InitPostgres(viper)
 	if err != nil {
 		return Injector{}, nil, err
 	}
-	iUserAccountQuery := account.InitUserAccountQuery(databaseDatabase, sugaredLogger)
-	iUserInfoQuery := info.InitUserInfoQuery(databaseDatabase, sugaredLogger)
+	iUserAccountQuery := account.InitUserAccountQuery(iPostgres, sugaredLogger)
+	iUserInfoQuery := info.InitUserInfoQuery(iPostgres, sugaredLogger)
 	userController := &user.Controller{
 		Log:          sugaredLogger,
-		Db:           databaseDatabase,
 		AccountQuery: iUserAccountQuery,
 		InfoQuery:    iUserInfoQuery,
+	}
+	iRedis, err := database.InitRedis(viper)
+	if err != nil {
+		return Injector{}, nil, err
 	}
 	router := &server.Router{
 		AdminController: controller,
 		UserController:  userController,
-		Database:        databaseDatabase,
+		Redis:           iRedis,
+		Log:             sugaredLogger,
 	}
 	serverServer := &server.Server{
-		Router:   router,
-		Config:   viper,
-		Database: databaseDatabase,
-		Log:      sugaredLogger,
+		Router: router,
+		Config: viper,
+		Redis:  iRedis,
+		Pg:     iPostgres,
+		Log:    sugaredLogger,
 	}
 	injector := Injector{
 		Server: serverServer,

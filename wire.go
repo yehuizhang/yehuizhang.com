@@ -15,10 +15,11 @@ import (
 
 func BuildInjector() (Injector, func(), error) {
 	wire.Build(
+		database.InitPostgres,
+		database.InitRedis,
 		flags.InitFlagParser,
 		logger.InitLogger,
 		config.InitConfig,
-		database.InitDatabase,
 		dao.QuerySet,
 		server.WireSet,
 		InjectorSet,
