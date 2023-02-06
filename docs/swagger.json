@@ -1,0 +1,53 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the backend server for yehuizhang.com",
+        "title": "zyh-go-webserver",
+        "termsOfService": "http://yehuizhang.com/terms/",
+        "contact": {
+            "name": "Yehui Zhang",
+            "url": "http://www.yehuizhang.com/support",
+            "email": "yehuizhang@yehuizhang.com"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://github.com/yehuizhang/go-zyh-webserver/blob/main/LICENSE"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "Get Health",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Get health status of the server",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "Description for what is this security definition being used",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

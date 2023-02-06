@@ -1,0 +1,37 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact:
+    email: yehuizhang@yehuizhang.com
+    name: Yehui Zhang
+    url: http://www.yehuizhang.com/support
+  description: This is the backend server for yehuizhang.com
+  license:
+    name: MIT License
+    url: https://github.com/yehuizhang/go-zyh-webserver/blob/main/LICENSE
+  termsOfService: http://yehuizhang.com/terms/
+  title: zyh-go-webserver
+  version: "1.0"
+paths:
+  /health:
+    get:
+      description: Get Health
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get health status of the server
+      tags:
+      - Status
+securityDefinitions:
+  ApiKeyAuth:
+    description: Description for what is this security definition being used
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+swagger: "2.0"
