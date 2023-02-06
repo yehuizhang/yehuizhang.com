@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/spf13/viper"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/controllers"
@@ -18,6 +19,7 @@ type Router struct {
 	UserController  *user.Controller
 	Redis           database.IRedis
 	Log             *logger.Logger
+	Config          *viper.Viper
 }
 
 func (r *Router) RegisterAPI(app *gin.Engine) {
@@ -26,7 +28,7 @@ func (r *Router) RegisterAPI(app *gin.Engine) {
 	//apiGroup.Use(middlewares.ErrorHandler(r.Log))
 	apiGroup.Use(gin.Logger())
 	apiGroup.Use(gin.Recovery())
-	apiGroup.Use(middlewares.Session(r.Redis))
+	apiGroup.Use(middlewares.Session(r.Redis, r.Config))
 
 	apiGroup.GET("/health", r.AdminController.GetHealth)
 	v1 := apiGroup.Group("v1")

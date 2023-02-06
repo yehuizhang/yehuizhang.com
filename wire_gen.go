@@ -48,6 +48,7 @@ func BuildInjector() (Injector, func(), error) {
 		UserController:  userController,
 		Redis:           iRedis,
 		Log:             sugaredLogger,
+		Config:          viper,
 	}
 	serverServer := &server.Server{
 		Router: router,
