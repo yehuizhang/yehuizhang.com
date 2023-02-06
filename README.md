@@ -1,5 +1,7 @@
 # Go Webapp Using GIN
 
+
+[![Swagger](https://img.shields.io/badge/swagger-live-brightgreen)](http://localhost:8080/swagger/index.html)
 [![GitHub version](https://badge.fury.io/gh/yehuizhang%2Fgo-zyh-webserver.svg)](https://badge.fury.io/gh/yehuizhang%2Fgo-zyh-webserver)
 [![CodeFactor](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver/badge)](https://www.codefactor.io/repository/github/yehuizhang/go-zyh-webserver)
 [![codecov](https://codecov.io/gh/yehuizhang/go-zyh-webserver/branch/main/graph/badge.svg?token=fQ74xxW1ez)](https://codecov.io/gh/yehuizhang/go-zyh-webserver)
