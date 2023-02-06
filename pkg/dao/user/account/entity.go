@@ -1,7 +1,7 @@
 package account
 
 import (
-	"yehuizhang.com/go-webapp-gin/src/dao/shared"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/shared"
 )
 
 type UserAccount struct {

@@ -1,9 +1,9 @@
 package tasks
 
 import (
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/account"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 )
 
 func AutoMigratePgSchema(pg database.IPostgres) error {

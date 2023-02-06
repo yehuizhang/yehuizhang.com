@@ -3,7 +3,7 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 )
 
 func (ctl *Controller) GetInfo(c *gin.Context) {

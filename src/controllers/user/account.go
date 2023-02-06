@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/account"
 	"yehuizhang.com/go-webapp-gin/pkg/ginsession"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
 )
 
 func (ctl *Controller) SignIn(c *gin.Context) {
