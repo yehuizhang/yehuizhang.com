@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"github.com/spf13/viper"
 	"net/http"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
 
@@ -11,7 +12,7 @@ import (
 )
 
 // Session Cookie expires in 7 days. Session is removed from DB in 2 hours, so it has to be refreshed to keep user live
-func Session(rd database.IRedis) gin.HandlerFunc {
+func Session(rd database.IRedis, config *viper.Viper) gin.HandlerFunc {
 	sessionConfig := ginsession.Config{
 		ErrorHandleFunc: func(c *gin.Context, err error) {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -25,10 +26,12 @@ func Session(rd database.IRedis) gin.HandlerFunc {
 		},
 	}
 
+	sessionLifeHour := config.GetInt("SESSION_LIFE_HOUR")
+
 	// This is the max length for user to keep the session without login again
-	cookieLifeTime := 3600 * 24 * 2
+	cookieLifeTime := 3600 * sessionLifeHour
 	// If user idles longer than this time, session data will be removed from DB and user has to log in again. Keep active refreshes sessionLife
-	sessionLifeTime := int64(3600 * 2)
+	sessionLifeTime := int64(3600 * sessionLifeHour)
 
 	return ginsession.NewWithConfig(
 		sessionConfig, session.SetStore(redis.NewRedisStoreWithCli(rd.Client(), "user:session:")),
