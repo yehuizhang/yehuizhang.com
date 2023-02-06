@@ -6,9 +6,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"testing"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/shared"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/account"
 	"yehuizhang.com/go-webapp-gin/src/controllers/user"
-	"yehuizhang.com/go-webapp-gin/src/dao/shared"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
 )
 
 func TestController_SignUp(t *testing.T) {

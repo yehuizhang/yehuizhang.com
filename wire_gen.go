@@ -7,14 +7,14 @@
 package main
 
 import (
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/account"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
 	"yehuizhang.com/go-webapp-gin/pkg/flags"
 	"yehuizhang.com/go-webapp-gin/pkg/logger"
 	"yehuizhang.com/go-webapp-gin/src/config"
 	"yehuizhang.com/go-webapp-gin/src/controllers/admin"
 	"yehuizhang.com/go-webapp-gin/src/controllers/user"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/account"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 	"yehuizhang.com/go-webapp-gin/src/server"
 )
 

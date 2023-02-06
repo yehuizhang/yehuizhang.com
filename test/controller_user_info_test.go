@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"testing"
 	"time"
+	"yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 	"yehuizhang.com/go-webapp-gin/src/controllers/user"
-	"yehuizhang.com/go-webapp-gin/src/dao/user/info"
 )
 
 func TestInputForm_Invalid_Birthday(t *testing.T) {
