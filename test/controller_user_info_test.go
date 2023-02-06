@@ -140,3 +140,113 @@ func TestController_GetInfo_DB_Failed(t *testing.T) {
 	v.GetInfo(c)
 	assert.Equal(t, 400, w.Code)
 }
+
+func TestController_UpdateInfo_Invalid_Input(t *testing.T) {
+	c, _ := createGinContext()
+
+	input := map[string]interface{}{
+		"name":     "name",
+		"birthday": "1988",
+		"gender":   "F",
+		"photoURL": "",
+	}
+
+	c.Request = generateRequest(http.MethodPost, "/", input)
+	c.Set(user.UID, "test")
+
+	mockedInfoQuery := IUserInfoQuery{}
+	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: lg}
+	v.UpdateInfo(c)
+
+	assert.Equal(t, 400, c.Writer.Status())
+}
+
+func TestController_UpdateInfo_Get_Info_Failed(t *testing.T) {
+	c, _ := createGinContext()
+
+	input := map[string]interface{}{
+		"name":     "name",
+		"birthday": "1988-01-02T08:00:00.000Z",
+		"gender":   "F",
+		"photoURL": "",
+	}
+
+	c.Request = generateRequest(http.MethodPost, "/", input)
+	c.Set(user.UID, "test")
+
+	mockedInfoQuery := IUserInfoQuery{}
+	mockedInfoQuery.On("Get", mock.Anything).Return(nil, 400)
+
+	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: lg}
+	v.UpdateInfo(c)
+
+	assert.Equal(t, 400, c.Writer.Status())
+}
+
+func TestController_UpdateInfo_Update_Info_Failed(t *testing.T) {
+	c, _ := createGinContext()
+
+	input := map[string]interface{}{
+		"name":     "name",
+		"birthday": "1988-01-02T08:00:00.000Z",
+		"gender":   "F",
+		"photoURL": "",
+	}
+
+	c.Request = generateRequest(http.MethodPost, "/", input)
+	c.Set(user.UID, "test")
+
+	mockedInfoQuery := IUserInfoQuery{}
+
+	mockedResult := info.UserInfo{
+		Id:        "uuid-test",
+		Name:      "",
+		Birthday:  time.Time{},
+		Gender:    "",
+		PhotoURL:  "",
+		CreatedAt: time.Time{},
+		UpdatedAt: time.Time{},
+	}
+
+	mockedInfoQuery.On("Get", mock.Anything).Return(&mockedResult, 0)
+	mockedInfoQuery.On("Update", mock.Anything).Return(500)
+
+	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: lg}
+	v.UpdateInfo(c)
+
+	assert.Equal(t, 500, c.Writer.Status())
+}
+
+func TestController_UpdateInfo_Success(t *testing.T) {
+	c, _ := createGinContext()
+
+	input := map[string]interface{}{
+		"name":     "name",
+		"birthday": "1988-01-02T08:00:00.000Z",
+		"gender":   "F",
+		"photoURL": "",
+	}
+
+	c.Request = generateRequest(http.MethodPost, "/", input)
+	c.Set(user.UID, "test")
+
+	mockedInfoQuery := IUserInfoQuery{}
+
+	mockedResult := info.UserInfo{
+		Id:        "uuid-test",
+		Name:      "",
+		Birthday:  time.Time{},
+		Gender:    "",
+		PhotoURL:  "",
+		CreatedAt: time.Time{},
+		UpdatedAt: time.Time{},
+	}
+
+	mockedInfoQuery.On("Get", mock.Anything).Return(&mockedResult, 0)
+	mockedInfoQuery.On("Update", mock.Anything).Return(0)
+
+	v := user.Controller{InfoQuery: &mockedInfoQuery, Log: lg}
+	v.UpdateInfo(c)
+
+	assert.Equal(t, 200, c.Writer.Status())
+}

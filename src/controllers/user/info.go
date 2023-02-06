@@ -44,7 +44,6 @@ func (ctl *Controller) CreateInfo(c *gin.Context) {
 
 func (ctl *Controller) UpdateInfo(c *gin.Context) {
 	uid := c.GetString(UID)
-
 	input := info.Form{}
 	if err := c.ShouldBind(&input); err != nil {
 		ctl.Log.Error(err)
@@ -53,7 +52,6 @@ func (ctl *Controller) UpdateInfo(c *gin.Context) {
 	}
 
 	userInfo, errorCode := ctl.InfoQuery.Get(uid)
-
 	if errorCode != 0 {
 		ctl.Log.Errorf("unable to get userInfo from db for user %s", uid)
 		c.AbortWithStatus(errorCode)
