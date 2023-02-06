@@ -80,6 +80,8 @@ go run main.go wire_gen.go
 - Documentation
   - [Emoji](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md)
   - [Markdown Syntax](https://www.markdownguide.org/extended-syntax)
+  - [Shields](https://shields.io/)
+  - [Swagger](https://github.com/swaggo/gin-swagger)
 
 ## CodeCov
 
