@@ -154,9 +154,6 @@ const docTemplate = `{
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"
-        },
-        "BasicAuth": {
-            "type": "basic"
         }
     }
 }`
