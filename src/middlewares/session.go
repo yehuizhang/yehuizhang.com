@@ -34,8 +34,11 @@ func Session(rd database.IRedis, config *viper.Viper) gin.HandlerFunc {
 	sessionLifeTime := int64(3600 * sessionLifeHour)
 
 	return ginsession.NewWithConfig(
-		sessionConfig, session.SetStore(redis.NewRedisStoreWithCli(rd.Client(), "user:session:")),
+		sessionConfig,
+		session.SetStore(redis.NewRedisStoreWithCli(rd.Client(), "user:session:")),
 		session.SetSecure(false), session.SetSameSite(http.SameSiteLaxMode),
 		session.SetCookieName("sid"), session.SetCookieLifeTime(cookieLifeTime),
-		session.SetExpired(sessionLifeTime))
+		session.SetExpired(sessionLifeTime),
+		session.SetEnableSIDInHTTPHeader(true),
+		session.SetSessionNameInHTTPHeader("Authorization"))
 }
