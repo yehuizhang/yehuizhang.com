@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"github.com/google/uuid"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,12 +14,14 @@ func Auth(c *gin.Context) {
 
 	store := ginsession.FromContext(c)
 
-	uid, ok := store.Get(user.UID)
-
-	if ok {
-		c.Set(user.UID, uid)
-	} else {
-		c.AbortWithStatus(http.StatusUnauthorized)
-		return
+	if uid, ok := store.Get(user.UID); ok {
+		if uid, ok := uid.(string); ok {
+			if _, err := uuid.Parse(uid); err == nil {
+				c.Set(user.UID, uid)
+				return
+			}
+		}
 	}
+	c.AbortWithStatus(http.StatusUnauthorized)
+	return
 }
