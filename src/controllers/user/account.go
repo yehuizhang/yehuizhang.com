@@ -49,6 +49,7 @@ func (ctl *Controller) SignUp(c *gin.Context) {
 	id, errCode := ctl.AccountQuery.Create(input)
 	if errCode != 0 {
 		c.AbortWithStatus(errCode)
+		return
 	}
 
 	if err := ginsession.AddValueToStore(c, UID, id); err != nil {
