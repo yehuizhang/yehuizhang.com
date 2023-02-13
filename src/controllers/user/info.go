@@ -6,6 +6,13 @@ import (
 	"yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 )
 
+// @formatter:off
+// @Summary		Get User Info
+// @Description	Get User Info
+// @Tags			User
+// @Produce		json
+// @Success		200	{object}	info.UserInfo
+// @Router			/user/info [get]
 func (ctl *Controller) GetInfo(c *gin.Context) {
 	uid := c.GetString(UID)
 

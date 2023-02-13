@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @formatter:off
 // @Summary		Get health status of the server
 // @Description	Get Health
 // @Tags			Status

@@ -38,6 +38,15 @@ func (ctl *Controller) SignIn(c *gin.Context) {
 	c.String(http.StatusOK, "successfully logged in")
 }
 
+// @formatter:off
+// @Summary		Register new account
+// @Description	Register new account
+// @Tags			User
+// @Accept			json
+// @Param			request	body	account.SignUpForm	true	"account credential"
+// @Produce		plain
+// @Success		201
+// @Router			/register [post]
 func (ctl *Controller) SignUp(c *gin.Context) {
 	input, err := readCredentialFromContext(c)
 	if err != nil {
