@@ -39,6 +39,7 @@ func Session(rd database.IRedis, config *viper.Viper) gin.HandlerFunc {
 		session.SetSecure(false), session.SetSameSite(http.SameSiteLaxMode),
 		session.SetCookieName("sid"), session.SetCookieLifeTime(cookieLifeTime),
 		session.SetExpired(sessionLifeTime),
-		session.SetEnableSIDInHTTPHeader(true),
-		session.SetSessionNameInHTTPHeader("Authorization"))
+		//session.SetEnableSIDInHTTPHeader(true),
+		//session.SetSessionNameInHTTPHeader("Authorization"),
+	)
 }

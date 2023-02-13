@@ -50,6 +50,6 @@ func (r *Router) RegisterAPI(app *gin.Engine) {
 	}
 	app.GET("/swagger/*any", ginSwagger.WrapHandler(
 		swaggerFiles.Handler,
-		ginSwagger.PersistAuthorization(true),
+		//ginSwagger.PersistAuthorization(true),
 	))
 }

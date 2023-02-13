@@ -23,5 +23,4 @@ func Auth(c *gin.Context) {
 		}
 	}
 	c.AbortWithStatus(http.StatusUnauthorized)
-	return
 }
