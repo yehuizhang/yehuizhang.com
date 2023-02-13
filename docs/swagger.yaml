@@ -1,4 +1,40 @@
 basePath: /api/v1
+definitions:
+  account.SignUpForm:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 64
+        minLength: 6
+        type: string
+      username:
+        description: This should be improved by using custom validator
+        maxLength: 15
+        minLength: 3
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  info.UserInfo:
+    properties:
+      birthday:
+        type: string
+      createdAt:
+        type: string
+      gender:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      photoURL:
+        type: string
+      updatedAt:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -26,6 +62,39 @@ paths:
       summary: Get health status of the server
       tags:
       - Status
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register new account
+      parameters:
+      - description: account credential
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/account.SignUpForm'
+      produces:
+      - text/plain
+      responses:
+        "201":
+          description: Created
+      summary: Register new account
+      tags:
+      - User
+  /user/info:
+    get:
+      description: Get User Info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/info.UserInfo'
+      summary: Get User Info
+      tags:
+      - User
 securityDefinitions:
   ApiKeyAuth:
     description: Description for what is this security definition being used

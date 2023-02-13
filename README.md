@@ -21,13 +21,6 @@
 ## Development
 - [Development Environment Setup](/docs/dev-setup.md)
 
-To start application
-
-```shell
-cd src
-go run main.go wire_gen.go
-```
-
 ## Design
 
 - [Password Authentication](https://www.sohamkamani.com/golang/password-authentication-and-storage/)

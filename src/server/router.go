@@ -48,5 +48,8 @@ func (r *Router) RegisterAPI(app *gin.Engine) {
 			userGroup.PUT("/info", r.UserController.UpdateInfo)
 		}
 	}
-	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	app.GET("/swagger/*any", ginSwagger.WrapHandler(
+		swaggerFiles.Handler,
+		ginSwagger.PersistAuthorization(true),
+	))
 }

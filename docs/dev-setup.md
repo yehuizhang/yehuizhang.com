@@ -12,6 +12,14 @@ docker-compose -p "zyh-gin-webapp" up --build --detach
 docker-compose -p "zyh-gin-webapp" down
 ```
 
+## Application
+
+```shell
+go run main.go wire_gen.go
+```
+
+[Swagger](http://localhost:8080/swagger/index.html)
+
 Tools to access DB:
 
 - [GoLand-Recommended](https://www.jetbrains.com/go/)
