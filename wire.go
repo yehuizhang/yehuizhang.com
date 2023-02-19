@@ -20,7 +20,7 @@ func BuildInjector() (Injector, func(), error) {
 		flags.InitFlagParser,
 		logger.InitLogger,
 		config.InitConfig,
-		dao.QuerySet,
+		dao.WireSet,
 		server.WireSet,
 		InjectorSet,
 	)

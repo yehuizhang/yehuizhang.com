@@ -11,6 +11,13 @@ import (
 
 func (ctl *Controller) SignIn(c *gin.Context) {
 
+	//ctx, err := ctxUtil.NewTransactionLockShare(c.Request.Context())
+	//if err != nil {
+	//	err := errors.AddNewContextError(c, err)
+	//	ctl.Log.Error(err)
+	//	return
+	//}
+
 	input := account.SignInForm{}
 	err := c.Bind(&input)
 
@@ -20,7 +27,7 @@ func (ctl *Controller) SignIn(c *gin.Context) {
 		return
 	}
 
-	record, errorCode := ctl.AccountQuery.GetByUsername(input.Username)
+	record, errorCode := ctl.AccountQuery.GetByUsername(c.Request.Context(), input.Username)
 	if errorCode != 0 {
 		c.AbortWithStatus(errorCode)
 		return
@@ -55,7 +62,7 @@ func (ctl *Controller) SignUp(c *gin.Context) {
 		return
 	}
 
-	id, errCode := ctl.AccountQuery.Create(input)
+	id, errCode := ctl.AccountQuery.Create(c.Request.Context(), input)
 	if errCode != 0 {
 		c.AbortWithStatus(errCode)
 		return

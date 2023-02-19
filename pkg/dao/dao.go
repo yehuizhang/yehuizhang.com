@@ -6,6 +6,8 @@ import (
 	"yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 )
 
-var QuerySet = wire.NewSet(
+var WireSet = wire.NewSet(
 	account.InitUserAccountQuery,
-	info.InitUserInfoQuery)
+	info.InitUserInfoQuery,
+	transactionSet,
+)

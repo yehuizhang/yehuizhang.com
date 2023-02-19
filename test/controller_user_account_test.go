@@ -20,7 +20,7 @@ func TestController_SignUp(t *testing.T) {
 		Email:    "test@test.com",
 	}
 	mockedAccountQuery := IUserAccountQuery{}
-	mockedAccountQuery.On("Create", mock.Anything).Return("test-id", 0)
+	mockedAccountQuery.On("Create", mock.Anything, mock.Anything).Return("test-id", 0)
 	c.Request = generateRequest(http.MethodPost, "/", input)
 	v := user.Controller{AccountQuery: &mockedAccountQuery, Log: lg}
 	v.SignUp(c)
@@ -47,7 +47,7 @@ func TestController_SignUp_Db_failure(t *testing.T) {
 		Email:    "test@test.com",
 	}
 	mockedAccountQuery := IUserAccountQuery{}
-	mockedAccountQuery.On("Create", mock.Anything).Return("", 777)
+	mockedAccountQuery.On("Create", mock.Anything, mock.Anything).Return("", 777)
 	c.Request = generateRequest(http.MethodPost, "/", input)
 	v := user.Controller{AccountQuery: &mockedAccountQuery, Log: lg}
 	v.SignUp(c)
@@ -71,7 +71,7 @@ func TestController_SignIn(t *testing.T) {
 		Active:   false,
 	}
 	mockedAccountQuery := IUserAccountQuery{}
-	mockedAccountQuery.On("GetByUsername", mock.Anything).Return(&dbResult, 0)
+	mockedAccountQuery.On("GetByUsername", mock.Anything, mock.Anything).Return(&dbResult, 0)
 	c.Request = generateRequest(http.MethodPost, "/", input)
 	v := user.Controller{AccountQuery: &mockedAccountQuery, Log: lg}
 	v.SignIn(c)
@@ -94,7 +94,7 @@ func TestController_SignIn_Invalid_Password(t *testing.T) {
 		Active:   false,
 	}
 	mockedAccountQuery := IUserAccountQuery{}
-	mockedAccountQuery.On("GetByUsername", mock.Anything).Return(&dbResult, 0)
+	mockedAccountQuery.On("GetByUsername", mock.Anything, mock.Anything).Return(&dbResult, 0)
 	c.Request = generateRequest(http.MethodPost, "/", input)
 	v := user.Controller{AccountQuery: &mockedAccountQuery, Log: lg}
 	v.SignIn(c)
@@ -109,7 +109,7 @@ func TestController_SignIn_DB_Failure(t *testing.T) {
 		Password: "password",
 	}
 	mockedAccountQuery := IUserAccountQuery{}
-	mockedAccountQuery.On("GetByUsername", mock.Anything).Return(nil, 777)
+	mockedAccountQuery.On("GetByUsername", mock.Anything, mock.Anything).Return(nil, 777)
 	c.Request = generateRequest(http.MethodPost, "/", input)
 	v := user.Controller{AccountQuery: &mockedAccountQuery, Log: lg}
 	v.SignIn(c)
