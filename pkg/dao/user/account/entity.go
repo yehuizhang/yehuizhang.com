@@ -26,6 +26,6 @@ type SignInForm struct {
 	Password string `json:"password" binding:"required,min=6,max=64"`
 }
 
-func GetAccountDB(ctx context.Context, db *gorm.DB) *gorm.DB {
+func getAccountDB(ctx context.Context, db *gorm.DB) *gorm.DB {
 	return shared.GetDB(ctx, db, &UserAccount{})
 }

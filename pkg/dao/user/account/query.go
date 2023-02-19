@@ -37,7 +37,7 @@ func (u UserAccountQuery) Create(ctx context.Context, input *SignUpForm) (string
 		Email:    input.Email,
 		Active:   true,
 	}
-	tx := GetAccountDB(ctx, u.Pg.Client()).Create(&userAccount)
+	tx := getAccountDB(ctx, u.Pg.Client()).Create(&userAccount)
 
 	if tx.Error != nil {
 		u.Log.Errorf("failed to store user account in DB. %s", tx.Error)
@@ -50,7 +50,7 @@ func (u UserAccountQuery) Create(ctx context.Context, input *SignUpForm) (string
 func (u UserAccountQuery) GetByUsername(ctx context.Context, username string) (*UserAccount, int) {
 	var record UserAccount
 
-	tx := GetAccountDB(ctx, u.Pg.Client()).Where("username = ?", username).First(&record)
+	tx := getAccountDB(ctx, u.Pg.Client()).Where("username = ?", username).First(&record)
 
 	if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		u.Log.Errorf("user %s was not found", username)

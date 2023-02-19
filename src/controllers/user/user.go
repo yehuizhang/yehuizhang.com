@@ -14,7 +14,7 @@ type Controller struct {
 	Log          *logger.Logger
 	AccountQuery account.IUserAccountQuery
 	InfoQuery    info.IUserInfoQuery
-	Transaction  dao.Transaction
+	Transaction  dao.ITransaction
 }
 
 const (

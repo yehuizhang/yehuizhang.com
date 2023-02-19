@@ -9,5 +9,5 @@ import (
 var WireSet = wire.NewSet(
 	account.InitUserAccountQuery,
 	info.InitUserInfoQuery,
-	transactionSet,
+	InitTransaction,
 )
