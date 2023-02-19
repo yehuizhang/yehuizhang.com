@@ -3,6 +3,8 @@ services:
   redis:
     container_name: redis
     image: redis:6.2-alpine
+    profiles:
+      - dev
     ports:
       - "6379:6379"
     #    restart: always
@@ -14,8 +16,10 @@ services:
   postgres:
     container_name: postgres
     image: postgres:14
+    profiles:
+      - dev
     ports:
-      - "${PG_PORT}:${PG_PORT}"
+      - "${PG_PORT}:5432"
     #    restart: always
     volumes:
       - dbs:/postgresql/data
@@ -23,6 +27,15 @@ services:
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PASSWORD}
       - POSTGRES_DB=${PG_DB_NAME}
+  adminer:
+    container_name: dbAdmin
+    image: adminer
+    profiles:
+      - db-debug
+    ports:
+      - "${PG_ADMIN_PORT}:8080"
+    depends_on:
+      - postgres
 volumes:
   dbs:
     driver: local
