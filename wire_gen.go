@@ -7,6 +7,7 @@
 package main
 
 import (
+	"yehuizhang.com/go-webapp-gin/pkg/dao"
 	"yehuizhang.com/go-webapp-gin/pkg/dao/user/account"
 	"yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 	"yehuizhang.com/go-webapp-gin/pkg/database"
@@ -34,10 +35,14 @@ func BuildInjector() (Injector, func(), error) {
 	}
 	iUserAccountQuery := account.InitUserAccountQuery(iPostgres, sugaredLogger)
 	iUserInfoQuery := info.InitUserInfoQuery(iPostgres, sugaredLogger)
+	transaction := dao.Transaction{
+		DB: iPostgres,
+	}
 	userController := &user.Controller{
 		Log:          sugaredLogger,
 		AccountQuery: iUserAccountQuery,
 		InfoQuery:    iUserInfoQuery,
+		Transaction:  transaction,
 	}
 	iRedis, err := database.InitRedis(viper)
 	if err != nil {

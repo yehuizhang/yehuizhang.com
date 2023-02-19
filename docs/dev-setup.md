@@ -33,7 +33,7 @@ Tools to access DB:
 ### [Mockery](https://github.com/vektra/mockery)
 To generate mocks based on the interface, update `--dir=` section and run the command below
 ```shell
-mockery --all --output=./test --outpkg=test --dir=src/dao/user
+mockery --all --output=./test --outpkg=test --dir=pkg/dao
 ```
 
 ## Swagger
@@ -45,4 +45,10 @@ swag init
 ```shell
 # Format comments
 swag fmt
+```
+
+## Wire
+```shell
+# Generate wire; run in root level 
+wire
 ```

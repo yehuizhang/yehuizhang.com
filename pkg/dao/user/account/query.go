@@ -1,6 +1,7 @@
 package account
 
 import (
+	"context"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -10,8 +11,8 @@ import (
 )
 
 type IUserAccountQuery interface {
-	Create(input *SignUpForm) (string, int)
-	GetByUsername(username string) (*UserAccount, int)
+	Create(ctx context.Context, input *SignUpForm) (string, int)
+	GetByUsername(ctx context.Context, username string) (*UserAccount, int)
 }
 
 type UserAccountQuery struct {
@@ -23,7 +24,7 @@ func InitUserAccountQuery(pg database.IPostgres, log *logger.Logger) IUserAccoun
 	return UserAccountQuery{Pg: pg, Log: log}
 }
 
-func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {
+func (u UserAccountQuery) Create(ctx context.Context, input *SignUpForm) (string, int) {
 
 	encryptedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 4)
 	if err != nil {
@@ -36,7 +37,7 @@ func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {
 		Email:    input.Email,
 		Active:   true,
 	}
-	tx := u.Pg.Client().Create(&userAccount)
+	tx := GetAccountDB(ctx, u.Pg.Client()).Create(&userAccount)
 
 	if tx.Error != nil {
 		u.Log.Errorf("failed to store user account in DB. %s", tx.Error)
@@ -46,10 +47,10 @@ func (u UserAccountQuery) Create(input *SignUpForm) (string, int) {
 	return userAccount.Id.String(), 0
 }
 
-func (u UserAccountQuery) GetByUsername(username string) (*UserAccount, int) {
+func (u UserAccountQuery) GetByUsername(ctx context.Context, username string) (*UserAccount, int) {
 	var record UserAccount
 
-	tx := u.Pg.Client().Where("username = ?", username).First(&record)
+	tx := GetAccountDB(ctx, u.Pg.Client()).Where("username = ?", username).First(&record)
 
 	if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		u.Log.Errorf("user %s was not found", username)

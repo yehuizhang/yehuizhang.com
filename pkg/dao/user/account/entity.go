@@ -1,6 +1,8 @@
 package account
 
 import (
+	"context"
+	"gorm.io/gorm"
 	"yehuizhang.com/go-webapp-gin/pkg/dao/shared"
 )
 
@@ -22,4 +24,8 @@ type SignUpForm struct {
 type SignInForm struct {
 	Username string `json:"username" binding:"required,alphanum,lowercase,min=3,max=15"`
 	Password string `json:"password" binding:"required,min=6,max=64"`
+}
+
+func GetAccountDB(ctx context.Context, db *gorm.DB) *gorm.DB {
+	return shared.GetDB(ctx, db, &UserAccount{})
 }
