@@ -27,12 +27,12 @@ run-prod: build
 ## test: Run tests with verbose mode
 .PHONY: test
 test:
-	@go test -v ./test
+	@go test -v ./...
 
 ## test with coverage
 .PHONY: test-cov
 test-cov:
-	@go test ./test -coverpkg=./src/... -race -covermode=atomic -coverprofile=coverage.out
+	@go test ./... -coverpkg=./src/... -race -covermode=atomic -coverprofile=coverage.out
 
 ## deps: Download modules
 .PHONY: deps
