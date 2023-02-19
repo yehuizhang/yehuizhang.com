@@ -10,14 +10,6 @@ import (
 )
 
 func (ctl *Controller) SignIn(c *gin.Context) {
-
-	//ctx, err := ctxUtil.NewTransactionLockShare(c.Request.Context())
-	//if err != nil {
-	//	err := errors.AddNewContextError(c, err)
-	//	ctl.Log.Error(err)
-	//	return
-	//}
-
 	input := account.SignInForm{}
 	err := c.Bind(&input)
 

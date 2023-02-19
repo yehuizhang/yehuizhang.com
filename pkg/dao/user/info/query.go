@@ -1,6 +1,7 @@
 package info
 
 import (
+	"context"
 	"errors"
 	"gorm.io/gorm"
 	"net/http"
@@ -9,9 +10,9 @@ import (
 )
 
 type IUserInfoQuery interface {
-	Create(userInfo *UserInfo) int
-	Get(id string) (*UserInfo, int)
-	Update(userInfo *UserInfo) int
+	Create(ctx context.Context, userInfo *UserInfo) int
+	Get(ctx context.Context, id string) (*UserInfo, int)
+	Update(ctx context.Context, userInfo *UserInfo) int
 }
 
 type UserInfoQuery struct {
@@ -26,8 +27,8 @@ func InitUserInfoQuery(pg database.IPostgres, log *logger.Logger) IUserInfoQuery
 	}
 }
 
-func (u UserInfoQuery) Create(userInfo *UserInfo) int {
-	tx := u.Pg.Client().Create(userInfo)
+func (u UserInfoQuery) Create(ctx context.Context, userInfo *UserInfo) int {
+	tx := getInfoDB(ctx, u.Pg.Client()).Create(userInfo)
 	if tx.Error != nil {
 		u.Log.Errorw("failed to store Userinfo into DB.", "err", tx.Error)
 		return http.StatusInternalServerError
@@ -35,8 +36,8 @@ func (u UserInfoQuery) Create(userInfo *UserInfo) int {
 	return 0
 }
 
-func (u UserInfoQuery) Update(userInfo *UserInfo) int {
-	tx := u.Pg.Client().Save(userInfo)
+func (u UserInfoQuery) Update(ctx context.Context, userInfo *UserInfo) int {
+	tx := getInfoDB(ctx, u.Pg.Client()).Save(userInfo)
 	if tx.Error != nil {
 		u.Log.Error("failed to update Userinfo into DB.", tx.Error)
 		return http.StatusInternalServerError
@@ -44,9 +45,9 @@ func (u UserInfoQuery) Update(userInfo *UserInfo) int {
 	return 0
 }
 
-func (u UserInfoQuery) Get(id string) (*UserInfo, int) {
+func (u UserInfoQuery) Get(ctx context.Context, id string) (*UserInfo, int) {
 	var result UserInfo
-	tx := u.Pg.Client().First(&result, "id = ?", id)
+	tx := getInfoDB(ctx, u.Pg.Client()).First(&result, "id = ?", id)
 
 	if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 		u.Log.Errorw("userinfo was not found", "id", id)

@@ -35,14 +35,12 @@ func BuildInjector() (Injector, func(), error) {
 	}
 	iUserAccountQuery := account.InitUserAccountQuery(iPostgres, sugaredLogger)
 	iUserInfoQuery := info.InitUserInfoQuery(iPostgres, sugaredLogger)
-	transaction := dao.Transaction{
-		DB: iPostgres,
-	}
+	iTransaction := dao.InitTransaction(iPostgres)
 	userController := &user.Controller{
 		Log:          sugaredLogger,
 		AccountQuery: iUserAccountQuery,
 		InfoQuery:    iUserInfoQuery,
-		Transaction:  transaction,
+		Transaction:  iTransaction,
 	}
 	iRedis, err := database.InitRedis(viper)
 	if err != nil {

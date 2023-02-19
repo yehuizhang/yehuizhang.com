@@ -3,6 +3,8 @@
 package test
 
 import (
+	context "context"
+
 	mock "github.com/stretchr/testify/mock"
 	info "yehuizhang.com/go-webapp-gin/pkg/dao/user/info"
 )
@@ -12,13 +14,13 @@ type IUserInfoQuery struct {
 	mock.Mock
 }
 
-// Create provides a mock function with given fields: userInfo
-func (_m *IUserInfoQuery) Create(userInfo *info.UserInfo) int {
-	ret := _m.Called(userInfo)
+// Create provides a mock function with given fields: ctx, userInfo
+func (_m *IUserInfoQuery) Create(ctx context.Context, userInfo *info.UserInfo) int {
+	ret := _m.Called(ctx, userInfo)
 
 	var r0 int
-	if rf, ok := ret.Get(0).(func(*info.UserInfo) int); ok {
-		r0 = rf(userInfo)
+	if rf, ok := ret.Get(0).(func(context.Context, *info.UserInfo) int); ok {
+		r0 = rf(ctx, userInfo)
 	} else {
 		r0 = ret.Get(0).(int)
 	}
@@ -26,25 +28,25 @@ func (_m *IUserInfoQuery) Create(userInfo *info.UserInfo) int {
 	return r0
 }
 
-// Get provides a mock function with given fields: id
-func (_m *IUserInfoQuery) Get(id string) (*info.UserInfo, int) {
-	ret := _m.Called(id)
+// Get provides a mock function with given fields: ctx, id
+func (_m *IUserInfoQuery) Get(ctx context.Context, id string) (*info.UserInfo, int) {
+	ret := _m.Called(ctx, id)
 
 	var r0 *info.UserInfo
 	var r1 int
-	if rf, ok := ret.Get(0).(func(string) (*info.UserInfo, int)); ok {
-		return rf(id)
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*info.UserInfo, int)); ok {
+		return rf(ctx, id)
 	}
-	if rf, ok := ret.Get(0).(func(string) *info.UserInfo); ok {
-		r0 = rf(id)
+	if rf, ok := ret.Get(0).(func(context.Context, string) *info.UserInfo); ok {
+		r0 = rf(ctx, id)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*info.UserInfo)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string) int); ok {
-		r1 = rf(id)
+	if rf, ok := ret.Get(1).(func(context.Context, string) int); ok {
+		r1 = rf(ctx, id)
 	} else {
 		r1 = ret.Get(1).(int)
 	}
@@ -52,13 +54,13 @@ func (_m *IUserInfoQuery) Get(id string) (*info.UserInfo, int) {
 	return r0, r1
 }
 
-// Update provides a mock function with given fields: userInfo
-func (_m *IUserInfoQuery) Update(userInfo *info.UserInfo) int {
-	ret := _m.Called(userInfo)
+// Update provides a mock function with given fields: ctx, userInfo
+func (_m *IUserInfoQuery) Update(ctx context.Context, userInfo *info.UserInfo) int {
+	ret := _m.Called(ctx, userInfo)
 
 	var r0 int
-	if rf, ok := ret.Get(0).(func(*info.UserInfo) int); ok {
-		r0 = rf(userInfo)
+	if rf, ok := ret.Get(0).(func(context.Context, *info.UserInfo) int); ok {
+		r0 = rf(ctx, userInfo)
 	} else {
 		r0 = ret.Get(0).(int)
 	}
