@@ -18,6 +18,7 @@ func InitFlagParser() *FlagParser {
 	configName := flag.String("configName", ".env", "name of the configuration file")
 	configType := flag.String("configType", "env", "type of the configuration file")
 	flag.Parse()
-	log.Printf("Environment: %s", *env)
-	return &FlagParser{Env: *env, ConfigPath: *configPath, ConfigName: *configName, ConfigType: *configType}
+	f := &FlagParser{Env: *env, ConfigPath: *configPath, ConfigName: *configName, ConfigType: *configType}
+	log.Printf("flags: %+v", *f)
+	return f
 }
