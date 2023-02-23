@@ -23,6 +23,8 @@
 
 ## Design
 
+![design-v1](https://user-images.githubusercontent.com/15071414/220856645-8cb01d6b-a3a6-4a26-a6b9-8788d2107620.svg)
+
 - [Password Authentication](https://www.sohamkamani.com/golang/password-authentication-and-storage/)
 
 ## Quality check
