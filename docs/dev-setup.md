@@ -6,12 +6,12 @@ Containers
 
 ```shell
 # Start
-docker-compose -p "zyh-gin-webapp" --profile dev up --build --detach
+docker compose -p "zyh-gin-webapp" --profile dev up --build --detach
 ```
 
 ```shell
 # Stop
-docker-compose -p "zyh-gin-webapp" down
+docker compose -p "zyh-gin-webapp" down
 ```
 
 Application
