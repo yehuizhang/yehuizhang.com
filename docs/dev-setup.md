@@ -16,8 +16,14 @@ docker compose -p "zyh-gin-webapp" down
 
 Application
 
+Dev: Local DB
 ```shell
 go run main.go wire_gen.go
+```
+
+Dev: Remote DB
+```shell
+go run main.go wire_gen.go -configName=".env.dev"
 ```
 
 ## Code Generating
