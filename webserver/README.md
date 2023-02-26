@@ -19,7 +19,7 @@
 - Live weather based on user's location
 
 ## Development
-- [Development Environment Setup](/docs/dev-setup.md)
+- [Development Environment Setup](/development.md)
 
 ## Design
 
