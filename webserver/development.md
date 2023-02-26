@@ -82,3 +82,10 @@ Used for Postgres
 Used to access Redis container
 
 [download Mac-M1 latest](https://download.redisinsight.redis.com/latest/RedisInsight-v2-mac-arm64.dmg)
+
+
+### Docker
+```shell
+docker build -t zyh-webserver .
+docker run -it --rm --name zyh-webserver-instance zyh-webserver
+```
